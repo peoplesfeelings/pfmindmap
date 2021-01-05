@@ -48,8 +48,8 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 - To add a message submit form, you can put a reply button in your item element, with a listener that shows a message submit form, and sends that form the <b>id</b> being replied to. 
 - Submit the user&apos;s message from your form to your app&apos;s backend. Then the user&apos;s message can get populated to the interface in the same way as the rest of the data.
 
-### Example:
-Clone this repo and put the directory in the same directory as this HTML file:
+### Complete Example:
+Clone this repo, put the directory in the same directory as the following HTML file, and open it in a web server.
 ```
 <html>
 <body>
