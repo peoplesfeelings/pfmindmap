@@ -131,12 +131,6 @@ export default class {
             if (observerFunctionParam === "autoUpdate") {
                 return true;
             }
-            if (observerFunctionParam === "zoomTo") {
-                return {
-                  fulfilled: (value) => {
-                    this.zoomToChart = value;
-                }};
-            }
             if (observerFunctionParam === "zoomToStored") {
                 /*
                     allows loading transform on window resize.
@@ -177,12 +171,9 @@ export default class {
         this.store.placeUnplaced();
         this.main.redefine('data', [], this.store.getData());
     }
-    zoomTo(level) {
-        if (this.zoomToChart != 'undefined') {
-            this.zoomToChart(level);
-        } else {
-            this.error('zoomToChart undefined');
-        }
+    async zoomTo(level) {
+        let zoomToChart = await this.main.value("zoomTo");
+        zoomToChart(level);
     }
     error(message) {
         throw 'PFMindMap error: ' + message;
