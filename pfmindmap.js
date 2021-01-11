@@ -71,6 +71,7 @@ export default class {
                 }, 500);
             });
         d3.select(containerEl).style("position", "relative");
+        d3.select(containerEl).style("cursor", "move");
     }
 
     receiveItem(itemData) {

@@ -112,3 +112,6 @@ Clone this repo, put the directory in the same directory as the following HTML f
 ### Dependencies (included)
 - D3 v6
 - Observable runtime
+
+### License
+- BSD 2 clause
