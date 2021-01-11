@@ -13,7 +13,7 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 ### Usage
 1. Instantiate this ES module, passing the constructor your arguments.
 2. Start sending your item data to your pfmindmap instance&apos;s <b>receiveItem</b> or <b>receiveItems</b> methods. The item marked as <b>is_first</b> should be sent to the <b>receiveItem</b> method.
-3. Call the <b>updateSimulationData</b> method when you want the visualization to update. You may want to do this whenever you add data, or, if loading a conversation with a large number of replies, you may want to call this less frequently, or after all data is loaded, to save on the frontend performance cost that comes, when updating the visualization data, for very large conversations.
+3. Call the <b>updateSimulationData</b> method when you want the visualization to update. You may want to do this whenever you add data, or, if loading a conversation with a large number of replies, you may want to call this less frequently, or after all data is loaded, to save on the frontend performance cost that comes when updating the visualization data, for very large conversations.
 
 ### Class constructor parameters
 - <b>containerEl</b>: DOM element of visualization container
@@ -28,6 +28,7 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 - <b>zoomTo(level)</b>: to set zoom level, manually, if you want. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
 - <b>receiveItem(data)</b>: takes a data object
 - <b>receiveItems(array)</b>: takes an array of data objects
+- <b>updateSimulationData()</b>: updates the visualization
 
 ### Item data format
 + JSON object
