@@ -1,11 +1,11 @@
 ### Purpose of this module
-+ Easy way to create a mind map (radial, hierarchical tree diagram) discussion interface, including these features:
-    + works as reactive (continuous updates) or otherwise 
-    + natural-looking tree that makes economical use of space
-    + able to handle discussions of up to thousands of replies
-    + the individual items are completely customizable (both their appearance and what data fields they are populated with)
-    + zoom and pan like a map interface
-    + draggable items
+Easy way to create a mind map (radial, hierarchical tree diagram) discussion interface, including these features:
+- works as reactive (continuous updates) or otherwise 
+- natural-looking tree that makes economical use of space
+- able to handle discussions of up to thousands of replies
+- the individual items are completely customizable (both their appearance and what data fields they are populated with)
+- zoom and pan like a map interface
+- draggable items
 
 ### Summary
 It&apos;s a JavaScript (ES6) module. The default export is a class.
