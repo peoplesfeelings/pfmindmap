@@ -2,6 +2,7 @@
 
 pfmindmap
 copyright people's feelings 2020
+github.com/peoplesfeelings/pfmindmap
 
 */
 
