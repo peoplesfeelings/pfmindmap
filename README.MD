@@ -11,7 +11,7 @@ Easy way to create a mind map (radial, hierarchical tree diagram) discussion int
 It&apos;s a JavaScript (ES6) module. The default export is a class.
 
 ### Usage
-1. Instantiate this ES module, passing the constructor your arguments.
+1. Instantiate the default class export of this ES module, passing its constructor your arguments.
 2. Start sending your item data to your pfmindmap instance&apos;s <b>receiveItem</b> or <b>receiveItems</b> methods. The item marked as <b>is_first</b> should be sent to the <b>receiveItem</b> method.
 3. Call the <b>updateSimulationData</b> method when you want the visualization to update. You may want to do this whenever you add data, or, if loading a conversation with a large number of replies, you may want to call this less frequently, or after all data is loaded, to save on the frontend performance cost that comes when updating the visualization data, for very large conversations.
 
@@ -42,7 +42,7 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 - For continuous updates, just keep sending it data, with the <b>receiveItem</b> or <b>receiveItems</b> methods, and call the <b>updateSimulationData</b> method when you want the new items to be appended to the diagram.
 - The <b>is_first</b> item does not have to arrive first.
 - The item referenced by a <b>reply_to_id</b> does not need to have arrived before the referencing item. 
-- This module loads D3 to the DOM, so <b>d3</b> will be accessible anywhere, after instantiating the module.
+- This module loads D3 to the DOM, so <b>d3</b> will be accessible anywhere, after instantiating the default class export of this module.
 - This module is meant for discussion interfaces, but it works for non-discussion use cases, also (any hierarchical tree).
 
 ### To use as a discussion interface
