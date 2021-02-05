@@ -25,10 +25,11 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 - <b>item_width</b> (required): string with numerical characters only. pixels
 
 ### Methods
-- <b>zoomTo(level)</b>: to set zoom level, manually, if you want. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
 - <b>receiveItem(data)</b>: takes a data object
 - <b>receiveItems(array)</b>: takes an array of data objects
 - <b>updateSimulationData()</b>: updates the visualization
+- <b>zoomTo(level)</b>: to set zoom level, manually, if you want. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
+- <b>freeze()</b>: freezes the simlation. It will unfreeze again if the user drags an item. 
 
 ### Item data format
 + JSON object

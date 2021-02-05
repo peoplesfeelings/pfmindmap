@@ -88,6 +88,10 @@ export default class {
         let zoomToChart = await this.main.value("zoomTo");
         zoomToChart(level);
     }
+    async freeze(level) {
+        let chart = await this.main.value("chart");
+        chart.freeze();
+    }
     error(message) {
         throw 'PFMindMap error: ' + message;
     }

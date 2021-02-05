@@ -128,6 +128,9 @@ export default function define(runtime, observer) {
             },
             zoomToStored: () => {
                 svg.call(zoom.scaleTo, mutableTransform.value.k, [mutableTransform.value.x,mutableTransform.value.y]);
+            },
+            freeze: () => {
+                simulation.stop();
             }
         });
     });
