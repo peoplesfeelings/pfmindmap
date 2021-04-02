@@ -49,10 +49,7 @@ export default class {
                     sets the internal transform of the zoom to the stored transform, whenever 
                     the chart is created. without this, event.transform starts at zoomIdentity.
                 */
-                return {
-                  fulfilled: (value) => {
-                    value();
-                }};
+                return true;
             }
         });
         
