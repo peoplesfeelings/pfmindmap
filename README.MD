@@ -47,7 +47,7 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 - This module is meant for discussion interfaces, but it works for non-discussion use cases, also (any hierarchical tree).
 
 ### To use as a discussion interface
-- To add a message submit form, you can put a reply button in your item element, with a listener that shows a message submit form, and sends that form the <b>id</b> being replied to. 
+- To add a message submit form, put a reply button in your item element, with a listener that shows a message submit form, and sends that form the <b>id</b> being replied to. 
 - Submit the user&apos;s message from your form to your app&apos;s backend. Then the user&apos;s message can get populated to the interface in the same way as the rest of the data.
 
 ### Complete Example

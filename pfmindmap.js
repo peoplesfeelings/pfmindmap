@@ -116,19 +116,19 @@ class store {
         if (item['is_first'] || this.parentIsPlaced(item)) {
             this._store.push(item);
         } else {
-            this._unplaced.push(item);
+            this.getUnplaced().push(item);
         }
     }
     addItems(items) {
-        Array.prototype.push.apply(this._unplaced, items)
+        Array.prototype.push.apply(this.getUnplaced(), items)
     }
     placeUnplaced() {
         var needToGoAgain = false;
 
-        for (let i = 0; i < this._unplaced.length; i++) {
-            if (this.parentIsPlaced(this._unplaced[i])) {
-                this._store.push(this._unplaced[i]);
-                this._unplaced.splice(i, 1);
+        for (let i = 0; i < this.getUnplaced().length; i++) {
+            if (this.parentIsPlaced(this.getUnplaced()[i])) {
+                this._store.push(this.getUnplaced()[i]);
+                this.getUnplaced().splice(i, 1);
                 needToGoAgain = true;
             }
         }
@@ -147,6 +147,6 @@ class store {
         return this._unplaced;
     }
     info() {
-        return '_store length: ' + this._store.length + '\n_unplaced length: ' + this._unplaced.length;
+        return '_store length: ' + this._store.length + '\n_unplaced length: ' + this.getUnplaced().length;
     }
 }
