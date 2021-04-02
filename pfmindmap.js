@@ -86,9 +86,13 @@ export default class {
         let chart = await this.main.value("chart");
         chart.zoomTo(level);
     }
-    async freeze(level) {
+    async freeze() {
         let chart = await this.main.value("chart");
         chart.freeze();
+    }
+    async centerView() {
+        let chart = await this.main.value("chart");
+        chart.centerView();
     }
     error(message) {
         throw 'PFMindMap error: ' + message;

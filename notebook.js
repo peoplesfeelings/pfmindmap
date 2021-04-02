@@ -144,6 +144,13 @@ export default function define(runtime, observer) {
             },
             freeze: () => {
                 simulation.stop();
+            },
+            centerView: () => {
+                let centeredTransform = d3.zoomIdentity.scale(mutableTransform.value.k);
+                svg.transition(d3.transition()
+                    .duration(500)
+                    .ease(d3.easeQuadInOut)
+                ).call(zoom.transform, centeredTransform);
             }
         });
     });
