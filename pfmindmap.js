@@ -70,8 +70,9 @@ export default class {
                     _this.main.redefine('dimens', [], [containerEl.clientWidth, containerEl.clientHeight]);
                 }, 500);
             });
-        d3.select(containerEl).style("position", "relative");
-        d3.select(containerEl).style("cursor", "move");
+        d3.select(containerEl)
+            .style("position", "relative")
+            .style("cursor", "move");
     }
 
     receiveItem(itemData) {
