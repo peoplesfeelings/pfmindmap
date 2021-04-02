@@ -85,8 +85,8 @@ export default class {
         this.main.redefine('data', [], this.store.getData());
     }
     async zoomTo(level) {
-        let zoomToChart = await this.main.value("zoomTo");
-        zoomToChart(level);
+        let chart = await this.main.value("chart");
+        chart.zoomTo(level);
     }
     async freeze(level) {
         let chart = await this.main.value("chart");

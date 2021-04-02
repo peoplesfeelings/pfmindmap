@@ -150,14 +150,6 @@ export default function define(runtime, observer) {
         }
     });
 
-    main.variable(observer("zoomTo")).define("zoomTo", ["chart"], function(chart){
-        return (
-            (level) => {
-                chart.zoomTo(level);
-            }
-        )
-    });
-
     main.variable(observer("zoomToStored")).define("zoomToStored", ["chart"], function(chart){
         return (
             () => {
