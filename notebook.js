@@ -20,9 +20,7 @@ export default function define(runtime, observer) {
             .alphaDecay(.05)
             .force("link", d3.forceLink().id(d => d.id).distance(nodeWidth/2).iterations(5).strength(0.4))
             .force("charge", d3.forceManyBody().strength(-55000))
-            .force("collision", d3.forceCollide(d => {
-                return Math.sqrt(d.width * d.width + d.height * d.height) / 2
-            }).iterations(4))
+            .force("collision", d3.forceCollide(d => { return d.radius }).iterations(4))
             .force("x", d3.forceX().strength(0.3))
             .force("y", d3.forceY().strength(0.3))
             .force("center", d3.forceCenter().strength(0.4));
@@ -68,9 +66,8 @@ export default function define(runtime, observer) {
 
         return Object.assign(svg.node(), {
             update: (dataNodes, dataLinks) => {
-                let nodeData = node.data();
-                const old = new Map(nodeData.map(d => [d.id, d]));
-                dataNodes = dataNodes.map(d => Object.assign(old.get(d.id) || {}, d));
+                const oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d]));
+                dataNodes = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
                 dataLinks = dataLinks.map(d => Object.assign({}, d));
 
                 node = node
@@ -86,6 +83,8 @@ export default function define(runtime, observer) {
                         newItem.style.visibility = "hidden";
                         document.body.appendChild(newItem);
                         d['height'] = newItem.getBoundingClientRect().height;
+                        // set radius (for collide). radius of rectangle's enclosing circle is half its diagonal
+                        d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
                         newItem.remove();
                         newItem.style.visibility = "visible";
 
