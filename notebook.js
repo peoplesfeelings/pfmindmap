@@ -12,8 +12,8 @@ export default function define(runtime, observer) {
     const CONSOLE_TAG = "notebook - ";
 
     main.variable(observer("chart")).define("chart", 
-      ["dimens", "drag", "invalidation", "itemCreator", "nodeFinder", "options", "mutableTransform", "populate"], 
-      function(dimens, drag, invalidation, itemCreator, nodeFinder, options, mutableTransform, populate) {
+      ["dimens", "drag", "invalidation", "itemCreator", "options", "mutableTransform", "populate"], 
+      function(dimens, drag, invalidation, itemCreator, options, mutableTransform, populate) {
         let nodeWidth = options['item_width'];
 
         const simulation = d3.forceSimulation()
@@ -109,6 +109,19 @@ export default function define(runtime, observer) {
                 simulation.force("link").links(dataLinks);
                 simulation.alpha(1).restart();
 
+                function nodeFinder(nodes, x, y, width) {
+                    let i;
+                    for (i = nodes.length - 1; i >= 0; --i) {
+                        if (
+                            x >= nodes[i].x - (width/2) && x <= nodes[i].x + (width/2) &&
+                            y >= nodes[i].y - (nodes[i].height/2) && y <= nodes[i].y + (nodes[i].height/2)
+                        ) {
+                            return nodes[i];
+                        }
+                    }
+                    return undefined; 
+                }
+
                 function subject(event, d) {
                     const   x = mutableTransform.value.invertX(event.x),
                             y = mutableTransform.value.invertY(event.y);
@@ -133,21 +146,6 @@ export default function define(runtime, observer) {
                 simulation.stop();
             }
         });
-    });
-
-    main.variable(observer("nodeFinder")).define("nodeFinder", [], function(){
-        return (nodes, x, y, width) => {
-            let i;
-            for (i = nodes.length - 1; i >= 0; --i) {
-                if (
-                    x >= nodes[i].x - (width/2) && x <= nodes[i].x + (width/2) &&
-                    y >= nodes[i].y - (nodes[i].height/2) && y <= nodes[i].y + (nodes[i].height/2)
-                ) {
-                    return nodes[i];
-                }
-            }
-            return undefined; 
-        }
     });
 
     main.variable(observer("zoomToStored")).define("zoomToStored", ["chart"], function(chart){
