@@ -45,7 +45,7 @@ export default function define(runtime, observer) {
 
         let node = svg.append("g")
             .attr("id", "nodesG")
-            .selectAll("rect");
+            .selectAll("foreignObject");
 
         simulation.on("tick", () => {
             link
