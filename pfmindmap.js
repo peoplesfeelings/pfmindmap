@@ -110,12 +110,12 @@ export default class {
 
 class store {
     constructor() {
-        this._store = [];
+        this._placed = [];
         this._unplaced = [];
     }
     addItem(item) {
         if (item['is_first'] || this.parentIsPlaced(item)) {
-            this._store.push(item);
+            this.getData().push(item);
         } else {
             this.getUnplaced().push(item);
         }
@@ -128,7 +128,7 @@ class store {
 
         for (let i = 0; i < this.getUnplaced().length; i++) {
             if (this.parentIsPlaced(this.getUnplaced()[i])) {
-                this._store.push(this.getUnplaced()[i]);
+                this.getData().push(this.getUnplaced()[i]);
                 this.getUnplaced().splice(i, 1);
                 needToGoAgain = true;
             }
@@ -142,12 +142,12 @@ class store {
         return this.getData().find(obj => obj['id'] == item['reply_to_id']);
     }
     getData() {
-        return this._store;
+        return this._placed;
     }
     getUnplaced() {
         return this._unplaced;
     }
     info() {
-        return '_store length: ' + this._store.length + '\n_unplaced length: ' + this.getUnplaced().length;
+        return '_placed length: ' + this.getData().length + '\n_unplaced length: ' + this.getUnplaced().length;
     }
 }
