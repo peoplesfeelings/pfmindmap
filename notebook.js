@@ -75,6 +75,7 @@ export default function define(runtime, observer) {
                 .join(
                     enter => enter.append(function(d) {
                         let newItem = populate(itemCreator(), d);
+
                         // set width
                         newItem.style.boxSizing = "border-box";
                         newItem.style.width = nodeWidth + "px";
@@ -83,10 +84,10 @@ export default function define(runtime, observer) {
                         newItem.style.visibility = "hidden";
                         document.body.appendChild(newItem);
                         d['height'] = newItem.getBoundingClientRect().height;
-                        // set radius (for collide). radius of rectangle's enclosing circle is half its diagonal
-                        d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
                         newItem.remove();
                         newItem.style.visibility = "visible";
+                        // set radius for collide. radius of rectangle's enclosing circle is half its diagonal
+                        d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
 
                         let rawFo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
                         rawFo.setAttribute("width", d['width']);
@@ -178,7 +179,7 @@ export default function define(runtime, observer) {
         return [container.clientWidth, container.clientHeight]
     });
 
-    main.variable(observer()).define("drag", [], function() {
+    main.variable().define("drag", [], function() {
         return (
             simulation => {
                 let isFirstEvent = true;
@@ -213,19 +214,17 @@ export default function define(runtime, observer) {
         )
     });
 
-    main.define("initialTransform", function(){
+    main.variable().define("initialTransform", [], function(){
         return( d3.zoomIdentity )
     });
 
-    main.variable(observer("mutableTransform")).define("mutableTransform", 
-        ["Mutable", "initialTransform"], 
-        (M, _) => new M(_)
-    );
+    main.variable(observer("mutableTransform")).define("mutableTransform", ["Mutable", "initialTransform"], function(Mutable, initialTransform) {
+        return new Mutable(initialTransform)
+    });
 
-    main.variable(observer("transform")).define("transform", 
-        ["mutableTransform"], 
-        _ => _.generator
-    );
+    main.variable(observer("transform")).define("transform", ["mutableTransform"], function(mutableTransform) {
+        return mutableTransform.generator
+    });
 
     return main;
 }
