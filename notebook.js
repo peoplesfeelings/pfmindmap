@@ -148,14 +148,6 @@ export default function define(runtime, observer) {
         });
     });
 
-    main.variable(observer("zoomToStored")).define("zoomToStored", ["chart"], function(chart){
-        return (
-            () => {
-                chart.zoomToStored();
-            }
-        )
-    });
-
     main.variable(observer("data")).define("data", function(){
         return []
     });
@@ -214,16 +206,16 @@ export default function define(runtime, observer) {
         )
     });
 
+    main.variable(observer("zoomToStored")).define("zoomToStored", ["chart"], function(chart){
+        chart.zoomToStored();
+    });
+
     main.variable().define("initialTransform", [], function(){
-        return( d3.zoomIdentity )
+        return d3.zoomIdentity;
     });
 
     main.variable(observer("mutableTransform")).define("mutableTransform", ["Mutable", "initialTransform"], function(Mutable, initialTransform) {
-        return new Mutable(initialTransform)
-    });
-
-    main.variable(observer("transform")).define("transform", ["mutableTransform"], function(mutableTransform) {
-        return mutableTransform.generator
+        return new Mutable(initialTransform);
     });
 
     return main;
