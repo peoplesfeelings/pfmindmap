@@ -181,7 +181,7 @@ export default function define(runtime, observer) {
         return [container.clientWidth, container.clientHeight]
     });
 
-    main.variable(observer()).define("drag", ["d3"], function(d3) {
+    main.variable(observer()).define("drag", [], function() {
         return (
             simulation => {
                 let isFirstEvent = true;
@@ -216,7 +216,7 @@ export default function define(runtime, observer) {
         )
     });
 
-    main.variable(observer("foreignObjects")).define("foreignObjects", ["autoUpdate","chart","d3"], function(autoUpdate,chart,d3){
+    main.variable(observer("foreignObjects")).define("foreignObjects", ["autoUpdate","chart"], function(autoUpdate,chart){
         return( d3.select(chart).select("g#nodesG").selectAll("foreignObject") )
     });
 
