@@ -77,23 +77,23 @@ export default function define(runtime, observer) {
                 .data(dataNodes, d => d.id)
                 .join(
                     enter => enter.append(function(d) {
-                        let theClone = populate(itemCreator(), d);
+                        let newItem = populate(itemCreator(), d);
                         // set width
-                        theClone.style.boxSizing = "border-box";
-                        theClone.style.width = nodeWidth + "px";
+                        newItem.style.boxSizing = "border-box";
+                        newItem.style.width = nodeWidth + "px";
                         d['width'] = nodeWidth;
                         // get height
-                        theClone.style.visibility = "hidden";
-                        document.body.appendChild(theClone);
-                        d['height'] = theClone.getBoundingClientRect().height;
-                        theClone.remove();
-                        theClone.style.visibility = "visible";
+                        newItem.style.visibility = "hidden";
+                        document.body.appendChild(newItem);
+                        d['height'] = newItem.getBoundingClientRect().height;
+                        newItem.remove();
+                        newItem.style.visibility = "visible";
 
                         let rawFo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
                         rawFo.setAttribute("width", d['width']);
                         rawFo.setAttribute("height", d['height']);
                         rawFo.setAttribute("transform", mutableTransform.value);
-                        rawFo.appendChild(theClone);
+                        rawFo.appendChild(newItem);
 
                         return rawFo;
                     })
