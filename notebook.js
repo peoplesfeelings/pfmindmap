@@ -163,7 +163,7 @@ export default function define(runtime, observer) {
     });
 
     main.variable(observer("autoUpdate")).define("autoUpdate", ["chart", "data"], function(chart, data){
-        function getLinks(dataNodes) {
+        function createLinkArray(dataNodes) {
             let links = [];
             for (var item of dataNodes) {
                 if (item['is_first']) {
@@ -174,7 +174,7 @@ export default function define(runtime, observer) {
             return links;
         }
 
-        return (chart.update(data, getLinks(data)))
+        chart.update(data, createLinkArray(data))
     });
 
     main.variable(observer("dimens")).define("dimens", ["container"], function(container) {
