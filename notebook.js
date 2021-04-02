@@ -216,10 +216,6 @@ export default function define(runtime, observer) {
         )
     });
 
-    main.variable(observer("foreignObjects")).define("foreignObjects", ["autoUpdate","chart"], function(autoUpdate,chart){
-        return( d3.select(chart).select("g#nodesG").selectAll("foreignObject") )
-    });
-
     main.define("initialTransform", function(){
         return( d3.zoomIdentity )
     });
