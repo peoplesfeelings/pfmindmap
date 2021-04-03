@@ -69,8 +69,7 @@ export default function define(runtime, observer) {
                 const oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d])),
                       dataNodesWithOld = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
 
-                node = node
-                    .data(dataNodesWithOld, d => d.id)
+                node = node.data(dataNodesWithOld, d => d.id)
                     .join(
                         enter => enter.append(function(d) {
                             let newItem = populate(itemCreator(), d);
@@ -99,8 +98,7 @@ export default function define(runtime, observer) {
                     )
                     .call(drag(simulation).subject(subject));
 
-                link = link
-                    .data(dataLinks, d => [d.source, d.target])
+                link = link.data(dataLinks, d => [d.source, d.target])
                     .join("line")
                     .attr("transform", mutableTransform.value);
 
