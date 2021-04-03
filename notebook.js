@@ -66,46 +66,45 @@ export default function define(runtime, observer) {
 
         return Object.assign(svg.node(), {
             update: (dataNodes, dataLinks) => {
-                const oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d]));
-                dataNodes = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
-                dataLinks = dataLinks.map(d => Object.assign({}, d));
+                const oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d])),
+                      dataNodesWithOld = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
 
                 node = node
-                .data(dataNodes, d => d.id)
-                .join(
-                    enter => enter.append(function(d) {
-                        let newItem = populate(itemCreator(), d);
+                    .data(dataNodesWithOld, d => d.id)
+                    .join(
+                        enter => enter.append(function(d) {
+                            let newItem = populate(itemCreator(), d);
 
-                        // set width
-                        newItem.style.boxSizing = "border-box";
-                        newItem.style.width = nodeWidth + "px";
-                        d['width'] = nodeWidth;
-                        // get height
-                        newItem.style.visibility = "hidden";
-                        document.body.appendChild(newItem);
-                        d['height'] = newItem.getBoundingClientRect().height;
-                        newItem.remove();
-                        newItem.style.visibility = "visible";
-                        // set radius for collide. radius of rectangle's enclosing circle is half its diagonal
-                        d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
+                            // set width
+                            newItem.style.boxSizing = "border-box";
+                            newItem.style.width = nodeWidth + "px";
+                            d['width'] = nodeWidth;
+                            // get height
+                            newItem.style.visibility = "hidden";
+                            document.body.appendChild(newItem);
+                            d['height'] = newItem.getBoundingClientRect().height;
+                            newItem.remove();
+                            newItem.style.visibility = "visible";
+                            // set radius for collide. radius of rectangle's enclosing circle is half its diagonal
+                            d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
 
-                        let rawFo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
-                        rawFo.setAttribute("width", d['width']);
-                        rawFo.setAttribute("height", d['height']);
-                        rawFo.setAttribute("transform", mutableTransform.value);
-                        rawFo.appendChild(newItem);
+                            let rawFo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+                            rawFo.setAttribute("width", d['width']);
+                            rawFo.setAttribute("height", d['height']);
+                            rawFo.setAttribute("transform", mutableTransform.value);
+                            rawFo.appendChild(newItem);
 
-                        return rawFo;
-                    })
-                )
-                .call(drag(simulation).subject(subject));
+                            return rawFo;
+                        })
+                    )
+                    .call(drag(simulation).subject(subject));
 
                 link = link
                     .data(dataLinks, d => [d.source, d.target])
                     .join("line")
                     .attr("transform", mutableTransform.value);
 
-                simulation.nodes(dataNodes);
+                simulation.nodes(dataNodesWithOld);
                 simulation.force("link").links(dataLinks);
                 simulation.alpha(1).restart();
 
@@ -124,8 +123,8 @@ export default function define(runtime, observer) {
 
                 function subject(event, d) {
                     const   x = mutableTransform.value.invertX(event.x),
-                            y = mutableTransform.value.invertY(event.y);
-                    const node = nodeFinder(dataNodes, x, y, nodeWidth);
+                            y = mutableTransform.value.invertY(event.y),
+                            node = nodeFinder(dataNodesWithOld, x, y, nodeWidth);
                     if (node) {
                         node.x = mutableTransform.value.applyX(node.x);
                         node.y = mutableTransform.value.applyY(node.y);
