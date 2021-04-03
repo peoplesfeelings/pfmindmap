@@ -14,6 +14,7 @@ export default function define(runtime, observer) {
     main.variable(observer("chart")).define("chart", 
       ["dimens", "drag", "invalidation", "itemCreator", "options", "mutableTransform", "populate"], 
       function(dimens, drag, invalidation, itemCreator, options, mutableTransform, populate) {
+        let devSleep = 0;
         let nodeWidth = options['item_width'];
 
         const simulation = d3.forceSimulation()
@@ -46,6 +47,7 @@ export default function define(runtime, observer) {
             .selectAll("foreignObject");
 
         simulation.on("tick", () => {
+            sleep(devSleep);
             link
                 .attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
@@ -64,14 +66,29 @@ export default function define(runtime, observer) {
             link.attr("transform", transform);
         }
 
+        /* dev stuff */
+        simulation.on('end', function() {
+            // devSleep = 1000;
+        })
+        function sleep(milliseconds) {
+            const date = Date.now();
+            let currentDate = null;
+            do {
+                currentDate = Date.now();
+            } while (currentDate - date < milliseconds);
+        }
+
         return Object.assign(svg.node(), {
             update: (dataNodes, dataLinks) => {
                 const oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d])),
                       dataNodesWithOld = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
 
+                // console.log('dataNodesWithOld: ' + JSON.stringify(dataNodesWithOld, null, 2));
+
                 node = node.data(dataNodesWithOld, d => d.id)
                     .join(
                         enter => enter.append(function(d) {
+                            d = setPosToParents(d, dataNodesWithOld);
                             let newItem = populate(itemCreator(), d);
 
                             // set width
@@ -105,6 +122,54 @@ export default function define(runtime, observer) {
                 simulation.nodes(dataNodesWithOld);
                 simulation.force("link").links(dataLinks);
                 simulation.alpha(1).restart();
+
+                function movePosByRadius(x, y, r) {
+                    console.log('parent x: ' + x + ' y: ' + y);
+                    // radians
+                    var randomAngle = Math.random()*Math.PI*2;
+                    // opp = hyp * sin(θ)
+                    var opp = r * Math.sin(randomAngle);
+                    var adj = Math.sqrt(r * r + opp * opp);
+                    console.log('new x: ' + (x + opp) + 'new y: ' + (y + adj))
+                    return [x + opp, y + adj];
+                }
+
+                function setPosToParents(itemDatum, itemsData) {
+                    let transform = mutableTransform.value;
+
+                    if (itemDatum['is_first']) {
+                        return itemDatum;
+                    }
+                    let firstParentWithPos = getFirstParentWithPos(itemDatum['reply_to_id'], itemsData);
+                    console.log(JSON.stringify(firstParentWithPos, null, 2));
+                    if (firstParentWithPos === null) {
+                        return itemDatum;
+                    } else {
+                        let posAtEdgeOfParent = movePosByRadius(firstParentWithPos['x'], firstParentWithPos['y'], firstParentWithPos['radius'] * 2);
+
+                        itemDatum['x'] = posAtEdgeOfParent[0];
+                        itemDatum['y'] = posAtEdgeOfParent[1];
+                        
+                        return itemDatum;
+                    }
+                }
+
+                function getFirstParentWithPos(parentId, data) {
+                    /* first parent with position, unless it's the root node */
+                    for (var item of data) {
+                        if (item['id'] == parentId) {
+                            if (item['is_first']) {
+                                return null;
+                            }
+                            if ('x' in item && 'y' in item) {
+                                return item;
+                            } else {
+                                return getFirstParentWithPos(item['reply_to_id'], data);
+                            }
+                        }
+                    }
+                    console.log('arrived where shouldnt');
+                }
 
                 function nodeFinder(nodes, x, y, width) {
                     let i;

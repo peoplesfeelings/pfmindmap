@@ -79,12 +79,12 @@ Clone this repo, put the directory in the same directory as the following HTML f
         { 'id': '4783489548', 'reply_to_id': '8843784378', 'message': 'hey' }
     ];
     
-    // just return a copy of your unpopulated item element
+    // return a copy of your unpopulated item element
     var itemCreator = () => {
         return document.querySelector('.item-div').cloneNode(true);
     }
     
-    // you decide how to populate your item with your data
+    // populate your item with your data
     var itemPopulator = (item, data) => { 
         item.innerHTML = data["message"];
         return item; 
