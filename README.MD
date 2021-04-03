@@ -12,13 +12,14 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 
 ### Usage
 1. Instantiate the default class export of this ES module, passing its constructor your arguments.
-2. Start sending your item data to your pfmindmap instance&apos;s <b>receiveItem</b> or <b>receiveItems</b> methods. The item marked as <b>is_first</b> should be sent to the <b>receiveItem</b> method.
-3. Call the <b>updateSimulationData</b> method when you want the visualization to update. You may want to do this whenever you add data, or, if loading a conversation with a large number of replies, you may want to call this less frequently, or after all data is loaded, to save on the frontend performance cost that comes when updating the visualization data, for very large conversations.
+2. Send the data for the root item to the <b>receiveItem</b> method.
+3. Start sending reply data to your pfmindmap instance&apos;s <b>receiveItem</b> or <b>receiveItems</b> methods. 
+4. Call the <b>updateSimulationData</b> method when you want the visualization to update. You may want to do this whenever you add data, or, if loading a conversation with a large number of replies, you may want to call this less frequently, or after all data is loaded, to save on the frontend performance cost that comes when updating the visualization data, for very large conversations.
 
 ### Class constructor parameters
 - <b>containerEl</b>: DOM element of visualization container
-- <b>itemCreatorReturner</b>: function that returns a function that returns an HTML element for the items
-- <b>populateFunctionReturner</b>: function that returns a function that populates your item elements. The returned function should have <b>(el, data)</b> for parameters. The returned function should return the element it&apos;s passed, populated. (see example, below)
+- <b>itemCreator</b>: function that returns an HTML element for the items
+- <b>itemPopulator</b>: function that populates your item elements. should have <b>(el, data)</b> for parameters and return the element it&apos;s passed, populated. (see example, below)
 - <b>options</b>: options object
 
 ### Options keys
@@ -30,13 +31,14 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 - <b>updateSimulationData()</b>: updates the visualization
 - <b>zoomTo(level)</b>: to set zoom level, manually, if you want. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
 - <b>freeze()</b>: freezes the simlation. It will unfreeze again if the user drags an item. 
+- <b>centerView()</b>: centers the diagram in the viewport
 
 ### Item data format
 + JSON object
 + required keys:
     + <b>id</b>: unique string
     + <b>reply_to_id</b>: matching <b>id</b> of other item
-    + <b>is_first</b>: only required for one item. boolean true, otherwise false or just don&apos;t include it. marks the beginning message of the conversation
+    + <b>is_first</b>: only required for one item, the root item. boolean true, otherwise false or just don&apos;t include it. marks the beginning message of the conversation
 + include whatever other key/value pairs you want. you will receive them in your populator function <b>data</b> argument, to populate your item element with
 
 ### Notes
@@ -78,23 +80,19 @@ Clone this repo, put the directory in the same directory as the following HTML f
     ];
     
     // just return a copy of your unpopulated item element
-    var itemCreatorReturner = () => {
-        return () => {
-            return document.querySelector('.item-div').cloneNode(true);
-        }
+    var itemCreator = () => {
+        return document.querySelector('.item-div').cloneNode(true);
     }
     
     // you decide how to populate your item with your data
-    var populateFunctionReturner = () => {
-        return (item, data) => { 
-            item.innerHTML = data["message"];
-            return item; 
-        }
-    };
+    var itemPopulator = (item, data) => { 
+        item.innerHTML = data["message"];
+        return item; 
+    }
     
     // instantiate
     var pfmmOptions = {'item_width': '200'}
-    var pfmm = new pfmindmap(document.querySelector("#some-div"), itemCreatorReturner, populateFunctionReturner, pfmmOptions);
+    var pfmm = new pfmindmap(document.querySelector("#some-div"), itemCreator, itemPopulator, pfmmOptions);
     
     // send it data
     pfmm.receiveItem(itemWithIsFirst);
@@ -116,3 +114,6 @@ Clone this repo, put the directory in the same directory as the following HTML f
 
 ### License
 - BSD 2 clause
+
+### Version
+1.1

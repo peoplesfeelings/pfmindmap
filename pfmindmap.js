@@ -15,17 +15,17 @@ import define from './notebook.js';
 const TAG = 'pfmm - ';
 
 export default class { 
-    constructor (containerEl, itemCreatorReturner, populateFunctionReturner, options) {
+    constructor (containerEl, itemCreator, itemPopulator, options) {
         if (arguments.length != 4) {
-            this.error('constructor expected 4 parameters: containerEl, itemReturner, populateFunctionReturner, and options object');
+            this.error('constructor expected 4 parameters: containerEl, itemCreator, itemPopulator, and options object');
         }
         if (typeof(containerEl) != 'object') {
             this.error('constructor first parameter should be a dom element');
         }
-        if (typeof(itemCreatorReturner) != 'function') {
+        if (typeof(itemCreator) != 'function') {
             this.error('constructor second parameter should be a function');
         }
-        if (typeof(populateFunctionReturner) != 'function') {
+        if (typeof(itemPopulator) != 'function') {
             this.error('constructor third parameter should be a function');
         }
         if (typeof(options) != 'object') {
@@ -54,8 +54,8 @@ export default class {
         });
         
         this.main.define("container", [], containerEl );
-        this.main.define("populate", [], populateFunctionReturner );
-        this.main.define("itemCreator", [], itemCreatorReturner );
+        this.main.define("populate", [], () => { return itemPopulator; } );
+        this.main.define("itemCreator", [], () => { return itemCreator; } );
         this.main.define("options", [], options );
 
         let _this = this;
