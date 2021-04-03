@@ -134,10 +134,10 @@ export default function define(runtime, observer) {
                 }
             },
             zoomTo: (level) => {
-                svg.transition(d3.transition()
+                svg.transition()
                     .duration(1500)
                     .ease(d3.easeQuadInOut)
-                ).call(zoom.scaleTo, level, [0,0]);
+                    .call(zoom.scaleTo, level, [0,0]);
             },
             zoomToStored: () => {
                 svg.call(zoom.scaleTo, mutableTransform.value.k, [mutableTransform.value.x,mutableTransform.value.y]);
@@ -147,10 +147,10 @@ export default function define(runtime, observer) {
             },
             centerView: () => {
                 let centeredTransform = d3.zoomIdentity.scale(mutableTransform.value.k);
-                svg.transition(d3.transition()
+                svg.transition()
                     .duration(500)
                     .ease(d3.easeQuadInOut)
-                ).call(zoom.transform, centeredTransform);
+                    .call(zoom.transform, centeredTransform);
             }
         });
     });
