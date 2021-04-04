@@ -20,7 +20,7 @@ export default function define(runtime, observer) {
         const simulation = d3.forceSimulation()
             .alphaDecay(.05)
             .force("link", d3.forceLink().id(d => d.id).distance(nodeWidth/2).iterations(5).strength(0.4))
-            .force("charge", d3.forceManyBody().strength(-55000))
+            .force("charge", d3.forceManyBody().strength(-55000).distanceMin(nodeWidth))
             .force("collision", d3.forceCollide(d => { return d.radius }).iterations(4))
             .force("x", d3.forceX().strength(0.3))
             .force("y", d3.forceY().strength(0.3))
@@ -83,8 +83,6 @@ export default function define(runtime, observer) {
                 const oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d])),
                       dataNodesWithOld = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
 
-                // console.log('dataNodesWithOld: ' + JSON.stringify(dataNodesWithOld, null, 2));
-
                 node = node.data(dataNodesWithOld, d => d.id)
                     .join(
                         enter => enter.append(function(d) {
@@ -124,14 +122,13 @@ export default function define(runtime, observer) {
                 simulation.alpha(1).restart();
 
                 function movePosByRadius(x, y, r) {
-                    console.log('parent x: ' + x + ' y: ' + y);
                     // radians
                     var randomAngle = Math.random()*Math.PI*2;
                     // opp = hyp * sin(θ)
                     var opp = r * Math.sin(randomAngle);
-                    var adj = Math.sqrt(r * r + opp * opp);
-                    console.log('new x: ' + (x + opp) + 'new y: ' + (y + adj))
-                    return [x + opp, y + adj];
+                    // pythagorean
+                    // var adj = Math.sqrt(r * r + opp * opp);
+                    return [x + opp, y + Math.sqrt(r * r + opp * opp)];
                 }
 
                 function setPosToParents(itemDatum, itemsData) {
@@ -141,7 +138,6 @@ export default function define(runtime, observer) {
                         return itemDatum;
                     }
                     let firstParentWithPos = getFirstParentWithPos(itemDatum['reply_to_id'], itemsData);
-                    console.log(JSON.stringify(firstParentWithPos, null, 2));
                     if (firstParentWithPos === null) {
                         return itemDatum;
                     } else {
@@ -168,7 +164,6 @@ export default function define(runtime, observer) {
                             }
                         }
                     }
-                    console.log('arrived where shouldnt');
                 }
 
                 function nodeFinder(nodes, x, y, width) {
