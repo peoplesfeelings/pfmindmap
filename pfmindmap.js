@@ -95,7 +95,7 @@ export default class {
         chart.centerView();
     }
     error(message) {
-        throw 'PFMindMap error: ' + message;
+        throw 'pfmindmap error: ' + message;
     }
     // debug stuff
     getStoreString() {

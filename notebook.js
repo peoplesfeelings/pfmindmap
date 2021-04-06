@@ -14,7 +14,6 @@ export default function define(runtime, observer) {
     main.variable(observer("chart")).define("chart", 
       ["dimens", "drag", "invalidation", "itemCreator", "options", "mutableTransform", "populate"], 
       function(dimens, drag, invalidation, itemCreator, options, mutableTransform, populate) {
-        let devSleep = 0;
         let nodeWidth = options['item_width'];
 
         const simulation = d3.forceSimulation()
@@ -47,7 +46,6 @@ export default function define(runtime, observer) {
             .selectAll("foreignObject");
 
         simulation.on("tick", () => {
-            sleep(devSleep);
             link
                 .attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
@@ -64,18 +62,6 @@ export default function define(runtime, observer) {
             mutableTransform.value = transform;
             node.attr("transform", transform);
             link.attr("transform", transform);
-        }
-
-        /* dev stuff */
-        simulation.on('end', function() {
-            // devSleep = 1000;
-        })
-        function sleep(milliseconds) {
-            const date = Date.now();
-            let currentDate = null;
-            do {
-                currentDate = Date.now();
-            } while (currentDate - date < milliseconds);
         }
 
         return Object.assign(svg.node(), {

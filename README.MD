@@ -43,8 +43,7 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 
 ### Notes
 - For continuous updates, just keep sending it data, with the <b>receiveItem</b> or <b>receiveItems</b> methods, and call the <b>updateSimulationData</b> method when you want the new items to be appended to the diagram.
-- The <b>is_first</b> item does not have to arrive first.
-- The item referenced by a <b>reply_to_id</b> does not need to have arrived before the referencing item. 
+- The <b>is_first</b> item does not have to arrive first, and the item referenced by a <b>reply_to_id</b> does not need to have arrived before the referencing item. 
 - This module loads D3 to the DOM, so <b>d3</b> will be accessible anywhere, after instantiating the default class export of this module.
 - This module is meant for discussion interfaces, but it works for non-discussion use cases, also (any hierarchical tree).
 
