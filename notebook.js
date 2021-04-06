@@ -14,12 +14,11 @@ export default function define(runtime, observer) {
     main.variable(observer("chart")).define("chart", 
       ["dimens", "drag", "invalidation", "itemCreator", "options", "mutableTransform", "populate"], 
       function(dimens, drag, invalidation, itemCreator, options, mutableTransform, populate) {
-        let nodeWidth = options['item_width'];
 
         const simulation = d3.forceSimulation()
             .alphaDecay(.05)
-            .force("link", d3.forceLink().id(d => d.id).distance(nodeWidth/2).iterations(5).strength(0.4))
-            .force("charge", d3.forceManyBody().strength(-55000).distanceMin(nodeWidth))
+            .force("link", d3.forceLink().id(d => d.id).distance(options['item_width']/2).iterations(5).strength(0.4))
+            .force("charge", d3.forceManyBody().strength(-55000).distanceMin(options['item_width']))
             .force("collision", d3.forceCollide(d => { return d.radius }).iterations(4))
             .force("x", d3.forceX().strength(0.3))
             .force("y", d3.forceY().strength(0.3))
@@ -52,7 +51,7 @@ export default function define(runtime, observer) {
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
 
-            node.attr("x", d => d.x - nodeWidth/2)
+            node.attr("x", d => d.x - options['item_width']/2)
                 .attr("y", d => d.y - d['height']/2);
         });
 
@@ -77,8 +76,8 @@ export default function define(runtime, observer) {
 
                             // set width
                             newItem.style.boxSizing = "border-box";
-                            newItem.style.width = nodeWidth + "px";
-                            d['width'] = nodeWidth;
+                            newItem.style.width = options['item_width'] + "px";
+                            d['width'] = options['item_width'];
                             // get height
                             newItem.style.visibility = "hidden";
                             document.body.appendChild(newItem);
@@ -168,7 +167,7 @@ export default function define(runtime, observer) {
                 function subject(event, d) {
                     const   x = mutableTransform.value.invertX(event.x),
                             y = mutableTransform.value.invertY(event.y),
-                            node = nodeFinder(dataNodesWithOld, x, y, nodeWidth);
+                            node = nodeFinder(dataNodesWithOld, x, y, options['item_width']);
                     if (node) {
                         node.x = mutableTransform.value.applyX(node.x);
                         node.y = mutableTransform.value.applyY(node.y);
