@@ -64,6 +64,7 @@ export default function define(runtime, observer) {
         }
 
         return Object.assign(svg.node(), {
+            // d3 pattern for introducing new data while keeping position data of existing data
             update: (dataNodes, dataLinks) => {
                 const oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d])),
                       dataNodesWithOld = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
@@ -71,20 +72,20 @@ export default function define(runtime, observer) {
                 node = node.data(dataNodesWithOld, d => d.id)
                     .join(
                         enter => enter.append(function(d) {
-                            d = setPosToParents(d, dataNodesWithOld);
+                            // entering items get positioned next to most recent ancestor with position
+                            d = setPosToAncestor(d, dataNodesWithOld);
                             let newItem = populate(itemCreator(), d);
 
-                            // set width
                             newItem.style.boxSizing = "border-box";
                             newItem.style.width = options['item_width'] + "px";
                             d['width'] = options['item_width'];
-                            // get height
+                            // temporarily hide it and add to dom to get height
                             newItem.style.visibility = "hidden";
                             document.body.appendChild(newItem);
                             d['height'] = newItem.getBoundingClientRect().height;
                             newItem.remove();
                             newItem.style.visibility = "visible";
-                            // set radius for collide. radius of rectangle's enclosing circle is half its diagonal
+                            // set radius for collide. (radius of rectangle's enclosing circle is half its diagonal)
                             d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
 
                             let rawFo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
@@ -106,6 +107,7 @@ export default function define(runtime, observer) {
                 simulation.force("link").links(dataLinks);
                 simulation.alpha(1).restart();
 
+                // helper functions used in this 'update' method
                 function movePosByRadius(x, y, r) {
                     // radians
                     var randomAngle = Math.random()*Math.PI*2;
@@ -115,14 +117,13 @@ export default function define(runtime, observer) {
                     // var adj = Math.sqrt(r * r + opp * opp);
                     return [x + opp, y + Math.sqrt(r * r + opp * opp)];
                 }
-
-                function setPosToParents(itemDatum, itemsData) {
+                function setPosToAncestor(itemDatum, itemsData) {
                     let transform = mutableTransform.value;
 
                     if (itemDatum['is_first']) {
                         return itemDatum;
                     }
-                    let firstParentWithPos = getFirstParentWithPos(itemDatum['reply_to_id'], itemsData);
+                    let firstParentWithPos = getFirstAncestorWithPos(itemDatum['reply_to_id'], itemsData);
                     if (firstParentWithPos === null) {
                         return itemDatum;
                     } else {
@@ -134,8 +135,7 @@ export default function define(runtime, observer) {
                         return itemDatum;
                     }
                 }
-
-                function getFirstParentWithPos(parentId, data) {
+                function getFirstAncestorWithPos(parentId, data) {
                     /* first parent with position, unless it's the root node */
                     for (var item of data) {
                         if (item['id'] == parentId) {
@@ -145,12 +145,12 @@ export default function define(runtime, observer) {
                             if ('x' in item && 'y' in item) {
                                 return item;
                             } else {
-                                return getFirstParentWithPos(item['reply_to_id'], data);
+                                return getFirstAncestorWithPos(item['reply_to_id'], data);
                             }
                         }
                     }
                 }
-
+                // nodeFinder/subject pattern: d3 pattern that allows drag and zoom to work together
                 function nodeFinder(nodes, x, y, width) {
                     let i;
                     for (i = nodes.length - 1; i >= 0; --i) {
@@ -163,7 +163,6 @@ export default function define(runtime, observer) {
                     }
                     return undefined; 
                 }
-
                 function subject(event, d) {
                     const   x = mutableTransform.value.invertX(event.x),
                             y = mutableTransform.value.invertY(event.y),
@@ -255,10 +254,12 @@ export default function define(runtime, observer) {
         )
     });
 
+    // if chart is recreated because user resized their window, this prevents the zoom level being reset to baseline
     main.variable(observer("zoomToStored")).define("zoomToStored", ["chart"], function(chart){
         chart.zoomToStored();
     });
 
+    // mutable/initial pattern: observable pattern that allows a cell to be changed by a cell that observes it, while having an initial value
     main.variable().define("initialTransform", [], function(){
         return d3.zoomIdentity;
     });

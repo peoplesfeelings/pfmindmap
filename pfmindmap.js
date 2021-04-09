@@ -62,11 +62,12 @@ export default class {
         let _this = this;
         let resizeTimeout;
         window.addEventListener('resize', function() {
+            // timeout pattern solves issue of window.resize firing twice in some browsers, causing the chart cell to run twice
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(
                 function() {
                     _this.main.redefine('dimens', [], [containerEl.clientWidth, containerEl.clientHeight]);
-                }, 500);
+                }, 100);
             });
         d3.select(containerEl)
             .style("position", "relative")
