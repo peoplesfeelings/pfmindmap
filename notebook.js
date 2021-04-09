@@ -18,8 +18,8 @@ export default function define(runtime, observer) {
         const simulation = d3.forceSimulation()
             .alphaDecay(.05)
             .force("link", d3.forceLink().id(d => d.id).distance(options['item_width']/2).iterations(5).strength(0.4))
-            .force("charge", d3.forceManyBody().strength(-55000).distanceMin(options['item_width']))
-            .force("collision", d3.forceCollide(d => { return d.radius }).iterations(4))
+            .force("charge", d3.forceManyBody().strength(-55000).distanceMin(d => d['radius'] * 2))
+            .force("collision", d3.forceCollide(d => { return d.radius }).iterations(1))
             .force("x", d3.forceX().strength(0.3))
             .force("y", d3.forceY().strength(0.3))
             .force("center", d3.forceCenter().strength(0.4));
@@ -45,8 +45,7 @@ export default function define(runtime, observer) {
             .selectAll("foreignObject");
 
         simulation.on("tick", () => {
-            link
-                .attr("x1", d => d.source.x)
+            link.attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
@@ -229,6 +228,7 @@ export default function define(runtime, observer) {
                     d.y = transform.invertY(event.y);
                 }
                 function dragged(event, d) {
+                    // using isFirst is a solution to the issue of drag getting activated for click events
                     if (isFirstEvent) {
                         simulation.alphaTarget(0.5).alpha(0.51).restart();
                         let transform = d3.zoomTransform(this);
