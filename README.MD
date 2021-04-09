@@ -23,7 +23,7 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 - <b>options</b>: options object
 
 ### Options keys
-- <b>item_width</b> (required): string with numerical characters only. pixels
+- <b>item_width</b>: string with numerical characters only. unit is pixels. default is '200'.
 
 ### Methods
 - <b>receiveItem(data)</b>: takes a data object
@@ -56,51 +56,35 @@ Clone this repo, put the directory in the same directory as the following HTML f
 ```
 <html>
 <body>
+<div id="container-div" style="min-height:100vh;"></div>
 
-<!-- container div -->
-<div id="some-div" style="height:100vh;"></div>
-
-<!-- item element to be cloned, in a hidden div -->
 <div style="display:none;">
-    <div class="item-div" style="border: 1px solid black; background: white;"></div>
+    <div class="item-to-clone" style="border: 1px solid black; background: white;"></div>
 </div>
 
 <script type="module">
     import pfmindmap from './pfmindmap/pfmindmap.js';
     
-    // some dummy data, one of them marked with 'is_first' (the root item)
-    var itemWithIsFirst = { 'id': '8843784378', 'reply_to_id': '', 'message': 'wazaaa', 'is_first': true };
-    var otherItems = [
+    var rootItem = { 'id': '8843784378', 'reply_to_id': '', 'message': 'wazaaa', 'is_first': true };
+    var replies = [
         { 'id': '8064783478', 'reply_to_id': '8843784378', 'message': 'wazaaaaaaa' },
         { 'id': '4785784534', 'reply_to_id': '8843784378', 'message': 'wazuhhhhh' },
         { 'id': '4398489489', 'reply_to_id': '4785784534', 'message': 'wasssaaahhh' },
         { 'id': '6734894958', 'reply_to_id': '4785784534', 'message': 'wauzzzuaaahhhh' },
         { 'id': '4783489548', 'reply_to_id': '8843784378', 'message': 'hey' }
     ];
-    
-    // return a copy of your unpopulated item element
     var itemCreator = () => {
-        return document.querySelector('.item-div').cloneNode(true);
+        return document.querySelector('.item-to-clone').cloneNode(true);
     }
-    
-    // populate your item with your data
     var itemPopulator = (item, data) => { 
         item.innerHTML = data["message"];
         return item; 
     }
+    var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, {});
     
-    // instantiate
-    var pfmmOptions = {'item_width': '200'}
-    var pfmm = new pfmindmap(document.querySelector("#some-div"), itemCreator, itemPopulator, pfmmOptions);
-    
-    // send it data
-    pfmm.receiveItem(itemWithIsFirst);
-    pfmm.receiveItems(otherItems);
-    
-    // you control when you want the visualization to update. call this to update it
+    pfmm.receiveItem(rootItem);
+    pfmm.receiveItems(replies);
     pfmm.updateSimulationData();
-
-    // call this if you want to manually set an initial zoom level
     pfmm.zoomTo(0.3);
 </script>
 </body>

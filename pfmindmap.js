@@ -12,7 +12,10 @@ import {Runtime, Library, Inspector} from './dependencies/observable/runtime.js'
 import define from './notebook.js';
 
 
-const TAG = 'pfmm - ';
+const   TAG = 'pfmm - ',
+        OPTIONS_DEFAULTS = {
+            'item_width': '200'
+        };
 
 export default class { 
     constructor (containerEl, itemCreator, itemPopulator, options) {
@@ -31,10 +34,8 @@ export default class {
         if (typeof(options) != 'object') {
             this.error('constructor fourth parameter should be an object');
         }
-        if (!options['item_width']) {
-            this.error('option item_width is required');
-        }
         this.store = new store();
+        this.combinedOptions = Object.assign({}, OPTIONS_DEFAULTS, options);
 
         this.main = new Runtime().module(define, observerFunctionParam => {
             if (observerFunctionParam === "chart") {
@@ -56,7 +57,7 @@ export default class {
         this.main.define("container", [], containerEl );
         this.main.define("populate", [], () => { return itemPopulator; } );
         this.main.define("itemCreator", [], () => { return itemCreator; } );
-        this.main.define("options", [], options );
+        this.main.define("options", [], this.combinedOptions );
 
         let _this = this;
         let resizeTimeout;
