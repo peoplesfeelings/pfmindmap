@@ -16,7 +16,10 @@ export default function define(runtime, observer) {
       function(dimens, drag, invalidation, itemCreator, options, mutableTransform, populate) {
 
         const simulation = d3.forceSimulation()
-            .alphaDecay(.05)
+            .alphaDecay(.04)
+            .alphaMin(.6001)
+            .alphaTarget(.6)
+            .velocityDecay(0.6)
             .force("link", d3.forceLink().id(d => d.id).distance(options['item_width']/2).iterations(5).strength(0.4))
             .force("charge", d3.forceManyBody().strength(-55000).distanceMin(d => d['radius'] * 2))
             .force("collision", d3.forceCollide(d => { return d.radius }).iterations(1))
@@ -86,6 +89,11 @@ export default function define(runtime, observer) {
                             newItem.style.visibility = "visible";
                             // set radius for collide. (radius of rectangle's enclosing circle is half its diagonal)
                             d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
+
+                            if (d['is_first']) {
+                                d['fx'] = 0;
+                                d['fy'] = 0;
+                            }
 
                             let rawFo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
                             rawFo.setAttribute("width", d['width']);
@@ -230,7 +238,7 @@ export default function define(runtime, observer) {
                 function dragged(event, d) {
                     // using isFirst is a solution to the issue of drag getting activated for click events
                     if (isFirstEvent) {
-                        simulation.alphaTarget(0.5).alpha(0.51).restart();
+                        simulation.alphaMin(0).restart();
                         let transform = d3.zoomTransform(this);
                         d.fx = transform.invertX(event.x);
                         d.fy = transform.invertY(event.y);
@@ -242,7 +250,7 @@ export default function define(runtime, observer) {
                 }
                 function dragended(event, d) {
                     isFirstEvent = true;
-                    if (!event.active) simulation.alphaTarget(0);
+                    if (!event.active) simulation.alphaMin(0.6001).alpha(.61);
                     d.fx = null;
                     d.fy = null;
                 }
