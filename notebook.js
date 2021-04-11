@@ -20,9 +20,9 @@ export default function define(runtime, observer) {
             .alphaMin(.6001)
             .alphaTarget(.6)
             .velocityDecay(0.7)
-            .force("link", d3.forceLink().id(d => d.id).distance(options['item_width']/2).iterations(5).strength(0.4))
+            .force("link", d3.forceLink().id(d => d.id).distance(0).iterations(5).strength(0.3))
             .force("charge", d3.forceManyBody().strength(-55000).distanceMin(d => d['radius'] * 2))
-            .force("collision", d3.forceCollide(d => { return d.radius }).iterations(1))
+            .force("collision", d3.forceCollide(d => d.radius).iterations(1))
             .force("x", d3.forceX().strength(0.3))
             .force("y", d3.forceY().strength(0.3))
             .force("center", d3.forceCenter().strength(0.4));
@@ -44,7 +44,6 @@ export default function define(runtime, observer) {
             .selectAll("line");
 
         let node = svg.append("g")
-            .attr("id", "nodesG")
             .selectAll("foreignObject");
 
         simulation.on("tick", () => {
@@ -53,6 +52,7 @@ export default function define(runtime, observer) {
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
 
+            // center element over point
             node.attr("x", d => d.x - options['item_width']/2)
                 .attr("y", d => d.y - d['height']/2);
         });
@@ -71,6 +71,7 @@ export default function define(runtime, observer) {
                 const oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d])),
                       dataNodesWithOld = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
 
+                // update the svg elements
                 node = node.data(dataNodesWithOld, d => d.id)
                     .join(
                         enter => enter.append(function(d) {
@@ -105,13 +106,14 @@ export default function define(runtime, observer) {
                         })
                     )
                     .call(drag(simulation).subject(subject));
-
                 link = link.data(dataLinks, d => [d.source, d.target])
                     .join("line")
                     .attr("transform", mutableTransform.value);
 
+                // update the forces
                 simulation.nodes(dataNodesWithOld);
                 simulation.force("link").links(dataLinks);
+
                 simulation.alpha(1).restart();
 
                 // helper functions used in this 'update' method
@@ -239,13 +241,10 @@ export default function define(runtime, observer) {
                 }
                 function dragged(event, d) {
                     if (d['is_first']) { return; }
-                    // using isFirst is a solution to the issue of drag getting activated for click events. 
+                    // using isFirstEvent is a solution to the issue of drag getting activated for click events. 
                     // (this stuff would normally be in dragstarted)
                     if (isFirstEvent) {
                         simulation.alphaMin(0).restart();
-                        let transform = d3.zoomTransform(this);
-                        d.fx = transform.invertX(event.x);
-                        d.fy = transform.invertY(event.y);
                         isFirstEvent = false;
                     }
                     let transform = d3.zoomTransform(this);
