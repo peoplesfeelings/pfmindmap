@@ -19,7 +19,7 @@ export default function define(runtime, observer) {
             .alphaDecay(.04)
             .alphaMin(.6001)
             .alphaTarget(.6)
-            .velocityDecay(0.6)
+            .velocityDecay(0.7)
             .force("link", d3.forceLink().id(d => d.id).distance(options['item_width']/2).iterations(5).strength(0.4))
             .force("charge", d3.forceManyBody().strength(-55000).distanceMin(d => d['radius'] * 2))
             .force("collision", d3.forceCollide(d => { return d.radius }).iterations(1))
@@ -231,12 +231,16 @@ export default function define(runtime, observer) {
             simulation => {
                 let isFirstEvent = true;
                 function dragstarted(event, d) {
+                    if (d['is_first']) { return; }
+                    // fixed issue in which drag start, while simulation was cooling, would cause the item to teleport elsewhere, until dragged event occurred
                     let transform = d3.zoomTransform(this);
                     d.x = transform.invertX(event.x);
                     d.y = transform.invertY(event.y);
                 }
                 function dragged(event, d) {
-                    // using isFirst is a solution to the issue of drag getting activated for click events
+                    if (d['is_first']) { return; }
+                    // using isFirst is a solution to the issue of drag getting activated for click events. 
+                    // (this stuff would normally be in dragstarted)
                     if (isFirstEvent) {
                         simulation.alphaMin(0).restart();
                         let transform = d3.zoomTransform(this);
@@ -249,6 +253,7 @@ export default function define(runtime, observer) {
                     d.fy = transform.invertY(event.y);
                 }
                 function dragended(event, d) {
+                    if (d['is_first']) { return; }
                     isFirstEvent = true;
                     if (!event.active) simulation.alphaMin(0.6001).alpha(.61);
                     d.fx = null;

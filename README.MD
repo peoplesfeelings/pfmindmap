@@ -99,4 +99,4 @@ Clone this repo, put the directory in the same directory as the following HTML f
 - BSD 2 clause
 
 ### Version
-1.2
+1.2.1
