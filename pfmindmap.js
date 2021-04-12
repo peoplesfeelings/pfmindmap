@@ -9,7 +9,7 @@ github.com/peoplesfeelings/pfmindmap
 
 import "./dependencies/d3/d3.v6.min.js";
 import {Runtime, Library, Inspector} from './dependencies/observable/runtime.js';
-import define from './notebook.js?v=1.2.1';
+import define from './notebook.js?v=1.3';
 
 
 const   TAG = 'pfmm - ',
@@ -95,6 +95,10 @@ export default class {
     async centerView() {
         let chart = await this.main.value("chart");
         chart.centerView();
+    }
+    async untangle() {
+        let chart = await this.main.value("chart");
+        chart.untangle();
     }
     error(message) {
         throw 'pfmindmap error: ' + message;
