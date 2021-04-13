@@ -1,7 +1,8 @@
 ### Purpose of this module
 Easy way to create a mind map (radial, hierarchical tree diagram) discussion interface, including these features:
 - works as reactive (continuous updates) or otherwise 
-- natural-looking tree that makes economical use of space
+- entering items enter gracefully, near to the most recent ancestor with position
+- natural-looking, stable tree that makes economical use of space
 - able to handle discussions of up to thousands of replies
 - the individual items are completely customizable (both their appearance and what data fields they are populated with)
 - zoom and pan like a map interface
@@ -32,6 +33,7 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 - <b>zoomTo(level)</b>: to set zoom level, manually, if you want. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
 - <b>freeze()</b>: freezes the simlation. It will unfreeze again if the user drags an item. 
 - <b>centerView()</b>: centers the diagram in the viewport
+- <b>untangle()</b>: a way to untangle anything that might be tangled in the diagram
 
 ### Item data format
 + JSON object

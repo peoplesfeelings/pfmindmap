@@ -217,8 +217,7 @@ export default function define(runtime, observer) {
 
                 simulation.velocityDecay(0.1)
                     .force("link", d3.forceLink(stashedLink.links()).id(d => d.id).distance(options['item_width']*30).iterations(30).strength(1))
-                    .force("charge", d3.forceManyBody().strength(-155000).distanceMin(options['item_width']))
-                    .force("collision", d3.forceCollide(d => d.radius).iterations(1));
+                    .force("charge", d3.forceManyBody().strength(-155000).distanceMin(options['item_width']));
 
                 simulation.alpha(1).tick(100).restart();
 
