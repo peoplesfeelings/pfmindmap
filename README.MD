@@ -4,7 +4,7 @@ Easy way to create a mind map (radial, hierarchical tree diagram) discussion int
 - entering items enter gracefully, near to the most recent ancestor that was already placed
 - natural-looking, stable tree that makes economical use of space
 - able to handle discussions of up to thousands of replies
-- the individual items are completely customizable (both their appearance and what data fields they are populated with)
+- the individual items are completely customizable (both their appearance and what data fields they are populated from)
 - zoom and pan like a map interface
 - draggable items
 - handles window resize events
@@ -102,4 +102,4 @@ Clone this repo, put the directory in the same directory as the following HTML f
 - BSD 2 clause
 
 ### Version
-1.3
+1.3.1

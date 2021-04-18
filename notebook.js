@@ -182,6 +182,8 @@ export default function define(runtime, observer) {
                     }
                     return node;
                 }
+                // return previous total, to allow autoUpdate cell to conditionally call untangle()
+                return oldNodeDataWithIdKeys.size;
             },
             zoomTo: (level) => {
                 svg.transition()
@@ -232,11 +234,12 @@ export default function define(runtime, observer) {
         });
     });
 
-    main.variable(observer("data")).define("data", function(){
+    main.variable(observer("data")).define("data", [], function(){
         return []
     });
 
     main.variable(observer("autoUpdate")).define("autoUpdate", ["chart", "data"], function(chart, data){
+        console.log('autoUpdate run');        
         function createLinkArray(dataNodes) {
             let links = [];
             for (var item of dataNodes) {
@@ -248,7 +251,12 @@ export default function define(runtime, observer) {
             return links;
         }
 
-        chart.update(data, createLinkArray(data))
+        let previousTotal = chart.update(data, createLinkArray(data));
+        let newTotal = data.length;
+
+        if (previousTotal == 0 && newTotal > 1 || previousTotal == 1 && newTotal > 1) {
+            chart.untangle();
+        }
     });
 
     main.variable(observer("dimens")).define("dimens", ["container"], function(container) {
@@ -260,6 +268,7 @@ export default function define(runtime, observer) {
             simulation => {
                 let isFirstEvent = true;
                 function dragstarted(event, d) {
+                    // root node not draggable
                     if (d['is_first']) { return; }
                     // fixed issue in which drag start, while simulation was cooling, would cause the item to teleport elsewhere, until dragged event occurred
                     let transform = d3.zoomTransform(this);
@@ -267,7 +276,9 @@ export default function define(runtime, observer) {
                     d.y = transform.invertY(event.y);
                 }
                 function dragged(event, d) {
+                    // root node not draggable
                     if (d['is_first']) { return; }
+                    // note that the isFirstEvent variable is not related to the 'is_first' data key
                     // using isFirstEvent is a solution to the issue of drag getting activated for click events. 
                     // (this stuff would normally be in dragstarted)
                     if (isFirstEvent) {
@@ -279,6 +290,7 @@ export default function define(runtime, observer) {
                     d.fy = transform.invertY(event.y);
                 }
                 function dragended(event, d) {
+                    // root node not draggable
                     if (d['is_first']) { return; }
                     isFirstEvent = true;
                     if (!event.active) simulation.alphaMin(0.6001).alpha(.61);
