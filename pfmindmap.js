@@ -122,21 +122,21 @@ class store {
     }
     addItem(item) {
         if (item['is_first'] || this.parentIsPlaced(item)) {
-            this.getData().push(item);
+            this._placed.push(item);
         } else {
-            this.getUnplaced().push(item);
+            this._unplaced.push(item);
         }
     }
     addItems(items) {
-        Array.prototype.push.apply(this.getUnplaced(), items)
+        Array.prototype.push.apply(this._unplaced, items)
     }
     placeUnplaced() {
         var needToGoAgain = false;
 
-        for (let i = 0; i < this.getUnplaced().length; i++) {
-            if (this.parentIsPlaced(this.getUnplaced()[i])) {
-                this.getData().push(this.getUnplaced()[i]);
-                this.getUnplaced().splice(i, 1);
+        for (let i = 0; i < this._unplaced.length; i++) {
+            if (this.parentIsPlaced(this._unplaced[i])) {
+                this._placed.push(this._unplaced[i]);
+                this._unplaced.splice(i, 1);
                 needToGoAgain = true;
             }
         }
@@ -146,7 +146,7 @@ class store {
         }
     }
     parentIsPlaced(item) {
-        return this.getData().find(obj => obj['id'] == item['reply_to_id']);
+        return this._placed.find(obj => obj['id'] == item['reply_to_id']);
     }
     getData() {
         return this._placed;
@@ -155,6 +155,6 @@ class store {
         return this._unplaced;
     }
     info() {
-        return '_placed length: ' + this.getData().length + '\n_unplaced length: ' + this.getUnplaced().length;
+        return '_placed length: ' + this._placed.length + '\n_unplaced length: ' + this._unplaced.length;
     }
 }
