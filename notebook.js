@@ -84,7 +84,7 @@ export default function define(runtime, observer) {
                     .join(
                         enter => enter.append(function(d) {
                             // entering items get positioned next to most recent ancestor with position
-                            d = setPosToAncestor(d, dataNodesWithOld);
+                            setPosToAncestor(d, dataNodesWithOld);
                             let newItem = populate(itemCreator(), d);
 
                             newItem.style.boxSizing = "border-box";
@@ -137,21 +137,15 @@ export default function define(runtime, observer) {
                     return [x + opp, y + Math.sqrt(r * r + opp * opp)];
                 }
                 function setPosToAncestor(itemDatum, itemsData) {
-                    let transform = mutableTransform.value;
-
                     if (itemDatum['is_first']) {
-                        return itemDatum;
+                        return;
                     }
                     let firstParentWithPos = getFirstAncestorWithPos(itemDatum['reply_to_id'], itemsData);
-                    if (firstParentWithPos === null) {
-                        return itemDatum;
-                    } else {
+                    if (firstParentWithPos !== null) {
                         let posAtEdgeOfParent = movePosByRadius(firstParentWithPos['x'], firstParentWithPos['y'], firstParentWithPos['radius'] * 2);
 
                         itemDatum['x'] = posAtEdgeOfParent[0];
                         itemDatum['y'] = posAtEdgeOfParent[1];
-                        
-                        return itemDatum;
                     }
                 }
                 function getFirstAncestorWithPos(parentId, data) {
