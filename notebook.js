@@ -14,6 +14,7 @@ export default function define(runtime, observer) {
     main.variable(observer("chart")).define("chart", 
       ["dimens", "drag", "invalidation", "itemCreator", "options", "mutableTransform", "populate"], 
       function(dimens, drag, invalidation, itemCreator, options, mutableTransform, populate) {
+        let timeStart = null;
 
         const simulation = d3.forceSimulation()
             .alphaDecay(.04)
@@ -53,11 +54,17 @@ export default function define(runtime, observer) {
                 .attr("y2", d => d.target.y);
 
             // center element over point
-            node.attr("x", d => d.x - options['item_width']/2)
-                .attr("y", d => d.y - d['height']/2);
+            node.attr("x", d => d.x - d['half_width'])
+                .attr("y", d => d.y - d['half_height']);
         });
 
-        invalidation.then(() => simulation.stop());
+        invalidation.then(() => simulation.stop() );
+
+        simulation.on('end', () => { 
+            let timeFinished = new Date().getTime();
+            let difference = timeFinished - timeStart;
+            console.log('time spent: ' + difference / 1000 + 's');
+        });
 
         function zoomed({transform}) {
             mutableTransform.value = transform;
@@ -68,6 +75,7 @@ export default function define(runtime, observer) {
         return Object.assign(svg.node(), {
             // d3 pattern for introducing new data while keeping position data of existing data
             update: (dataNodes, dataLinks) => {
+                timeStart = new Date().getTime();
                 const   oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d])),
                         dataNodesWithOld = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
 
@@ -88,8 +96,10 @@ export default function define(runtime, observer) {
                             d['height'] = newItem.getBoundingClientRect().height;
                             newItem.remove();
                             newItem.style.visibility = "visible";
-                            // set radius for collide. (radius of rectangle's enclosing circle is half its diagonal)
+                            // do some calculations here so they are done once and not at each simulation tick
                             d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
+                            d['half_width'] = d['width'] / 2;
+                            d['half_height'] = d['height'] / 2;
 
                             if (d['is_first']) {
                                 d['fx'] = 0;
