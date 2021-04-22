@@ -85,17 +85,17 @@ export default function define(runtime, observer) {
                         enter => enter.append(function(d) {
                             // entering items get positioned next to most recent ancestor with position
                             setPosToAncestor(d, dataNodesWithOld);
-                            let newItem = populate(itemCreator(), d);
+                            let newItemEl = populate(itemCreator(), d);
 
-                            newItem.style.boxSizing = "border-box";
-                            newItem.style.width = options['item_width'] + "px";
+                            newItemEl.style.boxSizing = "border-box";
+                            newItemEl.style.width = options['item_width'] + "px";
                             d['width'] = options['item_width'];
                             // temporarily hide it and add to dom to get height
-                            newItem.style.visibility = "hidden";
-                            document.body.appendChild(newItem);
-                            d['height'] = newItem.getBoundingClientRect().height;
-                            newItem.remove();
-                            newItem.style.visibility = "visible";
+                            newItemEl.style.visibility = "hidden";
+                            document.body.appendChild(newItemEl);
+                            d['height'] = newItemEl.getBoundingClientRect().height;
+                            newItemEl.remove();
+                            newItemEl.style.visibility = "visible";
                             // do some calculations here so they are done once and not at each simulation tick
                             d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
                             d['half_width'] = d['width'] / 2;
@@ -106,13 +106,13 @@ export default function define(runtime, observer) {
                                 d['fy'] = 0;
                             }
 
-                            let rawFo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
-                            rawFo.setAttribute("width", d['width']);
-                            rawFo.setAttribute("height", d['height']);
-                            rawFo.setAttribute("transform", mutableTransform.value);
-                            rawFo.appendChild(newItem);
+                            let newRawFo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+                            newRawFo.setAttribute("width", d['width']);
+                            newRawFo.setAttribute("height", d['height']);
+                            newRawFo.setAttribute("transform", mutableTransform.value);
+                            newRawFo.appendChild(newItemEl);
 
-                            return rawFo;
+                            return newRawFo;
                         })
                     )
                     .call(drag(simulation).subject(subject));
