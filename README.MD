@@ -134,4 +134,4 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
 - BSD 2 clause
 
 ### Version
-1.3.1
+1.3.2
