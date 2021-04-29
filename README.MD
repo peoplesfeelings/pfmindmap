@@ -1,5 +1,5 @@
 ### Purpose of this module
-Easy way to create a mind map (radial, hierarchical tree diagram) discussion interface, with the following functionality:
+Easy way to create a mind map (a radial tree diagram) discussion interface, with the following functionality:
 - works as reactive (continuous updates) or otherwise 
 - entering items enter gracefully, near to the most recent ancestor that was already placed
 - natural-looking, stable tree that makes economical use of space
@@ -55,14 +55,26 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 - Submit the user&apos;s message from your form to your app&apos;s backend. Then the user&apos;s message can get populated to the interface in the same way as the rest of the data.
 
 ### Complete Example
-Clone this repo, put the directory in the same directory as the following HTML file, and open it in a web server.
+Clone this repo, put the directory (named "pfmindmap") in the same directory as the following HTML file, and open it in a web server.
 ```
 <html>
 <body>
 <div id="container-div" style="min-height:100vh;"></div>
 
 <div style="display:none;">
-    <div class="item-to-clone" style="border: 1px solid black; background: white;"></div>
+    <div class="item-to-clone" style="border: 1px solid black; background: white; border-radius: 5px; min-height: 50px; padding: 10px;"></div>
+</div>
+
+<script type="module">
+    import pfmindmap from './pfmindmap/pfmindmap.js';
+    
+    var rootItem = { 'id': '8843784378', 'reply_to_id': '', 'message': 'first message', 'is_first': true };
+    var replies = [<html>
+<body>
+<div id="container-div" style="min-height:100vh;"></div>
+
+<div style="display:none;">
+    <div class="item-to-clone" style="border: 1px solid black; background: white; border-radius: 5px; min-height: 50px; padding: 10px;"></div>
 </div>
 
 <script type="module">
@@ -70,11 +82,31 @@ Clone this repo, put the directory in the same directory as the following HTML f
     
     var rootItem = { 'id': '8843784378', 'reply_to_id': '', 'message': 'wazaaa', 'is_first': true };
     var replies = [
-        { 'id': '8064783478', 'reply_to_id': '8843784378', 'message': 'wazaaaaaaa' },
-        { 'id': '4785784534', 'reply_to_id': '8843784378', 'message': 'wazuhhhhh' },
-        { 'id': '4398489489', 'reply_to_id': '4785784534', 'message': 'wasssaaahhh' },
-        { 'id': '6734894958', 'reply_to_id': '4785784534', 'message': 'wauzzzuaaahhhh' },
-        { 'id': '4783489548', 'reply_to_id': '8843784378', 'message': 'hey' }
+        { 'id': '8064783478', 'reply_to_id': '8843784378', 'message': 'first level reply' },
+        { 'id': '4785784534', 'reply_to_id': '8843784378', 'message': 'another first level reply' },
+        { 'id': '4398489489', 'reply_to_id': '4785784534', 'message': 'second level reply text' },
+        { 'id': '6734894958', 'reply_to_id': '4785784534', 'message': 'another 2nd level reply' },
+        { 'id': '6733494934', 'reply_to_id': '6734894958', 'message': 'a 3rd level reply' },
+        { 'id': '6734894923', 'reply_to_id': '6734894958', 'message': 'another 3rd level reply' },
+        { 'id': '6734894912', 'reply_to_id': '6734894923', 'message': '4th level reply' },
+        { 'id': '4783489548', 'reply_to_id': '8843784378', 'message': 'this is another first level reply' }
+    ];
+    var itemCreator = () => {
+        return document.querySelector('.item-to-clone').cloneNode(true);
+    }
+    var itemPopulator = (item, data) => { 
+        item.innerHTML = data["message"];
+        return item; 
+    }
+    var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, { 'item_width': '300'});
+    
+    pfmm.receiveItem(rootItem);
+    pfmm.receiveItems(replies);
+    pfmm.updateSimulationData();
+    pfmm.zoomTo(0.3);
+</script>
+</body>
+</html>
     ];
     var itemCreator = () => {
         return document.querySelector('.item-to-clone').cloneNode(true);

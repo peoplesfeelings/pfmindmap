@@ -14,19 +14,17 @@ export default function define(runtime, observer) {
     main.variable(observer("chart")).define("chart", 
       ["dimens", "drag", "invalidation", "itemCreator", "options", "mutableTransform", "populate"], 
       function(dimens, drag, invalidation, itemCreator, options, mutableTransform, populate) {
-        let timeStart = null;
 
         const simulation = d3.forceSimulation()
             .alphaDecay(.04)
             .alphaMin(.6001)
             .alphaTarget(.6)
             .velocityDecay(0.7)
-            .force("link", d3.forceLink().id(d => d.id).distance(options['item_width']).iterations(5).strength(0.3))
+            .force("link", d3.forceLink().id(d => d.id).distance(options['item_width']).iterations(5).strength(0.8))
             .force("charge", d3.forceManyBody().strength(-55000).distanceMin(options['item_width']))
             .force("collision", d3.forceCollide(d => d.radius).iterations(1))
-            .force("x", d3.forceX().strength(0.3))
-            .force("y", d3.forceY().strength(0.3))
-            .force("center", d3.forceCenter().strength(0.4));
+            .force("x", d3.forceX().strength(0.25))
+            .force("y", d3.forceY().strength(0.25));
 
         const svg = d3.create("svg")
             .attr("viewBox", [-1*dimens[0] / 2, -1*dimens[1] / 2, dimens[0], dimens[1]]);
@@ -61,9 +59,7 @@ export default function define(runtime, observer) {
         invalidation.then(() => simulation.stop() );
 
         simulation.on('end', () => { 
-            let timeFinished = new Date().getTime();
             let difference = timeFinished - timeStart;
-            console.log('time spent: ' + difference / 1000 + 's');
         });
 
         function zoomed({transform}) {
@@ -75,7 +71,6 @@ export default function define(runtime, observer) {
         return Object.assign(svg.node(), {
             // d3 pattern for introducing new data while keeping position data of existing data
             update: (dataNodes, dataLinks) => {
-                timeStart = new Date().getTime();
                 const   oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d])),
                         dataNodesWithOld = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
 
@@ -214,12 +209,10 @@ export default function define(runtime, observer) {
                     stashedLink = simulation.force("link"),
                     stashedX = simulation.force("x"),
                     stashedY = simulation.force("y"),
-                    stashedCenter = simulation.force("center"),
                     stashedVelocityDecay = simulation.velocityDecay();
 
                 simulation.force("x", null);
                 simulation.force("y", null);
-                simulation.force("center", null);
 
                 simulation.velocityDecay(0.1)
                     .force("link", d3.forceLink(stashedLink.links()).id(d => d.id).distance(options['item_width']*30).iterations(30).strength(1))
@@ -232,8 +225,7 @@ export default function define(runtime, observer) {
                     .force("charge", stashedCharge)
                     .force("collision", stashedCollision)
                     .force("x", stashedX)
-                    .force("y", stashedY)
-                    .force("center", stashedCenter);
+                    .force("y", stashedY);
             }
         });
     });
@@ -243,7 +235,6 @@ export default function define(runtime, observer) {
     });
 
     main.variable(observer("autoUpdate")).define("autoUpdate", ["chart", "data"], function(chart, data){
-        console.log('autoUpdate run');        
         function createLinkArray(dataNodes) {
             let links = [];
             for (var item of dataNodes) {
