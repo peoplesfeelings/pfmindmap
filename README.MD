@@ -99,7 +99,7 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
 
 ### Dependencies (included)
 - D3 v6
-- Observable runtime
+- Observable runtime (v4.8.0)
 
 ### License
 - BSD 2 clause

@@ -58,10 +58,6 @@ export default function define(runtime, observer) {
 
         invalidation.then(() => simulation.stop() );
 
-        simulation.on('end', () => { 
-            let difference = timeFinished - timeStart;
-        });
-
         function zoomed({transform}) {
             mutableTransform.value = transform;
             node.attr("transform", transform);
