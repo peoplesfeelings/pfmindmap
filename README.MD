@@ -68,18 +68,6 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
 <script type="module">
     import pfmindmap from './pfmindmap/pfmindmap.js';
     
-    var rootItem = { 'id': '8843784378', 'reply_to_id': '', 'message': 'first message', 'is_first': true };
-    var replies = [<html>
-<body>
-<div id="container-div" style="min-height:100vh;"></div>
-
-<div style="display:none;">
-    <div class="item-to-clone" style="border: 1px solid black; background: white; border-radius: 5px; min-height: 50px; padding: 10px;"></div>
-</div>
-
-<script type="module">
-    import pfmindmap from './pfmindmap/pfmindmap.js';
-    
     var rootItem = { 'id': '8843784378', 'reply_to_id': '', 'message': 'wazaaa', 'is_first': true };
     var replies = [
         { 'id': '8064783478', 'reply_to_id': '8843784378', 'message': 'first level reply' },
@@ -99,23 +87,6 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
         return item; 
     }
     var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, { 'item_width': '300'});
-    
-    pfmm.receiveItem(rootItem);
-    pfmm.receiveItems(replies);
-    pfmm.updateSimulationData();
-    pfmm.zoomTo(0.3);
-</script>
-</body>
-</html>
-    ];
-    var itemCreator = () => {
-        return document.querySelector('.item-to-clone').cloneNode(true);
-    }
-    var itemPopulator = (item, data) => { 
-        item.innerHTML = data["message"];
-        return item; 
-    }
-    var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, {});
     
     pfmm.receiveItem(rootItem);
     pfmm.receiveItems(replies);
