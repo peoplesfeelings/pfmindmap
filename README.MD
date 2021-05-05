@@ -20,11 +20,11 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 
 ### Class constructor parameters
 - <b>containerEl</b>: DOM element of visualization container
-- <b>itemCreator</b>: function that returns an HTML element for the items
+- <b>itemCreator</b>: function that returns an HTML element for an item
 - <b>itemPopulator</b>: function that populates your item elements. should have <b>(el, data)</b> for parameters and return the element it&apos;s passed, populated. (see example, below)
 - <b>options</b>: options object
 
-### Options keys
+### Options
 - <b>item_width</b>: string with numerical characters only. unit is pixels. default is '200'.
 
 ### Methods
@@ -42,7 +42,7 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
     + <b>id</b>: unique string
     + <b>reply_to_id</b>: matching <b>id</b> of other item
     + <b>is_first</b>: only required for one item, the root item. boolean true, otherwise false or just don&apos;t include it. marks the beginning message of the conversation
-+ include whatever other key/value pairs you want. you will receive them in your populator function <b>data</b> argument, to populate your item element with
++ Include whatever other key/value pairs you want. You will receive them in your populator function <b>data</b> argument, to populate your item element with
 
 ### Notes
 - For continuous updates, just keep sending it data, with the <b>receiveItem</b> or <b>receiveItems</b> methods, and call the <b>updateSimulationData</b> method when you want the new items to be appended to the diagram.
@@ -105,4 +105,4 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
 - BSD 2 clause
 
 ### Version
-1.3.2
+1.3.3

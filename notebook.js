@@ -6,6 +6,9 @@ github.com/peoplesfeelings/pfmindmap
 
 */
 
+/* 
+    observable notebook like from observablehq.com
+*/
 
 export default function define(runtime, observer) {
     const main = runtime.module();
@@ -101,6 +104,7 @@ export default function define(runtime, observer) {
                             newRawFo.setAttribute("width", d['width']);
                             newRawFo.setAttribute("height", d['height']);
                             newRawFo.setAttribute("transform", mutableTransform.value);
+                            newRawFo.style.willChange = "transform";
                             newRawFo.appendChild(newItemEl);
 
                             return newRawFo;
