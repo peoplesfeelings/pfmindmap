@@ -15,9 +15,8 @@ To provide an easy way to implement a mind map interface. Useful for discussion 
 
 ### Usage
 1. Instantiate the default class export of this ES module.
-2. Send the data for the root item to the <b>receiveItem</b> method.
-3. Start sending reply data to your pfmindmap instance&apos;s <b>receiveItem</b> or <b>receiveItems</b> methods. 
-4. Call the <b>updateSimulationData</b> method when you want the visualization to update.
+2. Start sending data to your pfmindmap instance&apos;s <b>receiveItem</b> or <b>receiveItems</b> methods. 
+3. Call the <b>updateSimulationData</b> method when you want the visualization to update.
 
 ### Class constructor parameters
 - <b>containerEl</b>: DOM element of visualization container
@@ -112,4 +111,4 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
 - BSD 2 clause
 
 ### Version
-1.3.3
+1.3.4

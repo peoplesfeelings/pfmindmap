@@ -9,7 +9,7 @@ github.com/peoplesfeelings/pfmindmap
 
 import "./dependencies/d3/d3.v6.min.js";
 import {Runtime, Library, Inspector} from './dependencies/observable/runtime.js';
-import define from './notebook.js?v=1.3.3';
+import define from './notebook.js?v=1.3.4';
 
 
 const   TAG = 'pfmm - ',
@@ -121,7 +121,7 @@ class store {
         this._unplaced = [];
     }
     addItem(item) {
-        if (item['is_first'] || this.parentIsPlaced(item)) {
+        if (this.parentIsPlaced(item)) {
             this._placed.push(item);
         } else {
             this._unplaced.push(item);
@@ -146,7 +146,7 @@ class store {
         }
     }
     parentIsPlaced(item) {
-        return this._placed.find(obj => obj['id'] == item['reply_to_id']);
+        return this._placed.find(obj => obj['id'] == item['reply_to_id']) || item['is_first'];
     }
     getData() {
         return this._placed;
