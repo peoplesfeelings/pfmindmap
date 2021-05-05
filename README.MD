@@ -1,22 +1,23 @@
-### Purpose of this module
-Easy way to create a mind map (a radial tree diagram) discussion interface, with the following functionality:
+### Summary
+It&apos;s a JavaScript ES6 module. The default export is a class.
+
+### Purpose 
+To provide an easy way to implement a mind map interface. Useful for discussion interfaces or hierarchical data visualizations. It's kind of a D3 wrapper that gives you a certain set of features ready to go, and extends simple endpoints. That feature set is:
 - works as reactive (continuous updates) or otherwise 
 - entering items enter gracefully, near to the most recent ancestor that was already placed
-- natural-looking, stable tree that makes economical use of space
-- able to handle discussions of up to thousands of replies
-- the individual items are completely customizable (both their appearance and what data fields they are populated from)
+- natural-looking, stable tree that makes economical use of space (accomplished with D3's force simulation)
+- scales to thousands of replies
+- diagram items are customizable in appearance and data model (you provide HTML for item, and a populator function)
 - zoom and pan like a map interface
 - draggable items
 - handles window resize events
-
-### Summary
-It&apos;s a JavaScript (ES6) module. The default export is a class.
+- data can arrive out of order (only items that can be placed in the tree are displayed)
 
 ### Usage
-1. Instantiate the default class export of this ES module, passing its constructor your arguments.
+1. Instantiate the default class export of this ES module.
 2. Send the data for the root item to the <b>receiveItem</b> method.
 3. Start sending reply data to your pfmindmap instance&apos;s <b>receiveItem</b> or <b>receiveItems</b> methods. 
-4. Call the <b>updateSimulationData</b> method when you want the visualization to update. You may want to do this whenever you add data, or, if loading a conversation with a large number of replies, you may want to call this less frequently, or after all data is loaded, to save on the frontend performance cost that comes when updating the visualization data, for very large conversations.
+4. Call the <b>updateSimulationData</b> method when you want the visualization to update.
 
 ### Class constructor parameters
 - <b>containerEl</b>: DOM element of visualization container
