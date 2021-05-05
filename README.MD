@@ -58,41 +58,47 @@ It&apos;s a JavaScript (ES6) module. The default export is a class.
 Clone this repo, put the directory (named "pfmindmap") in the same directory as the following HTML file, and open it in a web server.
 ```
 <html>
+<head>
+    <style>
+        .item-to-clone { cursor: default; }
+        .item-to-clone:active { cursor: grabbing; }
+    </style>
+</head>
 <body>
-<div id="container-div" style="min-height:100vh;"></div>
+    <div id="container-div" style="min-height:100vh;"></div>
 
-<div style="display:none;">
-    <div class="item-to-clone" style="border: 1px solid black; background: white; border-radius: 5px; min-height: 50px; padding: 10px;"></div>
-</div>
+    <div style="display:none;">
+        <div class="item-to-clone" style="border: 1px solid black; background: white; border-radius: 5px; min-height: 50px; padding: 10px;"></div>
+    </div>
 
-<script type="module">
-    import pfmindmap from './pfmindmap/pfmindmap.js';
-    
-    var rootItem = { 'id': '8843784378', 'reply_to_id': '', 'message': 'wazaaa', 'is_first': true };
-    var replies = [
-        { 'id': '8064783478', 'reply_to_id': '8843784378', 'message': 'first level reply' },
-        { 'id': '4785784534', 'reply_to_id': '8843784378', 'message': 'another first level reply' },
-        { 'id': '4398489489', 'reply_to_id': '4785784534', 'message': 'second level reply text' },
-        { 'id': '6734894958', 'reply_to_id': '4785784534', 'message': 'another 2nd level reply' },
-        { 'id': '6733494934', 'reply_to_id': '6734894958', 'message': 'a 3rd level reply' },
-        { 'id': '6734894923', 'reply_to_id': '6734894958', 'message': 'another 3rd level reply' },
-        { 'id': '6734894912', 'reply_to_id': '6734894923', 'message': '4th level reply' },
-        { 'id': '4783489548', 'reply_to_id': '8843784378', 'message': 'this is another first level reply' }
-    ];
-    var itemCreator = () => {
-        return document.querySelector('.item-to-clone').cloneNode(true);
-    }
-    var itemPopulator = (item, data) => { 
-        item.innerHTML = data["message"];
-        return item; 
-    }
-    var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, { 'item_width': '300'});
-    
-    pfmm.receiveItem(rootItem);
-    pfmm.receiveItems(replies);
-    pfmm.updateSimulationData();
-    pfmm.zoomTo(0.3);
-</script>
+    <script type="module">
+        import pfmindmap from './pfmindmap/pfmindmap.js';
+        
+        var rootItem = { 'id': '8843784378', 'reply_to_id': '', 'message': 'wazaaa', 'is_first': true };
+        var replies = [
+            { 'id': '8064783478', 'reply_to_id': '8843784378', 'message': 'first level reply' },
+            { 'id': '4785784534', 'reply_to_id': '8843784378', 'message': 'another first level reply' },
+            { 'id': '4398489489', 'reply_to_id': '4785784534', 'message': 'second level reply text' },
+            { 'id': '6734894958', 'reply_to_id': '4785784534', 'message': 'another 2nd level reply' },
+            { 'id': '6733494934', 'reply_to_id': '6734894958', 'message': 'a 3rd level reply' },
+            { 'id': '6734894923', 'reply_to_id': '6734894958', 'message': 'another 3rd level reply' },
+            { 'id': '6734894912', 'reply_to_id': '6734894923', 'message': '4th level reply' },
+            { 'id': '4783489548', 'reply_to_id': '8843784378', 'message': 'this is another first level reply' }
+        ];
+        var itemCreator = () => {
+            return document.querySelector('.item-to-clone').cloneNode(true);
+        }
+        var itemPopulator = (item, data) => { 
+            item.innerHTML = data["message"];
+            return item; 
+        }
+        var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, { 'item_width': '300'});
+        
+        pfmm.receiveItem(rootItem);
+        pfmm.receiveItems(replies);
+        pfmm.updateSimulationData();
+        pfmm.zoomTo(0.3);
+    </script>
 </body>
 </html>
 ```
