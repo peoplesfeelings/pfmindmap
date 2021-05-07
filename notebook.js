@@ -185,7 +185,7 @@ export default function define(runtime, observer) {
                 return oldNodeDataWithIdKeys.size;
             },
             zoomTo: (level) => {
-                svg.transition()
+                svg.transition('pfmmzoomto')
                     .duration(1500)
                     .ease(d3.easeQuadInOut)
                     .call(zoom.scaleTo, level, [0,0]);

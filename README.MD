@@ -72,8 +72,8 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
     <script type="module">
         import pfmindmap from './pfmindmap/pfmindmap.js';
         
-        var rootItem = { 'id': '8843784378', 'reply_to_id': '', 'message': 'wazaaa', 'is_first': true };
-        var replies = [
+        var data = [
+            { 'id': '8843784378', 'reply_to_id': '', 'message': 'wazaaa', 'is_first': true },
             { 'id': '8064783478', 'reply_to_id': '8843784378', 'message': 'first level reply' },
             { 'id': '4785784534', 'reply_to_id': '8843784378', 'message': 'another first level reply' },
             { 'id': '4398489489', 'reply_to_id': '4785784534', 'message': 'second level reply text' },
@@ -91,9 +91,7 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
             return item; 
         }
         var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, { 'item_width': '300'});
-        
-        pfmm.receiveItem(rootItem);
-        pfmm.receiveItems(replies);
+        pfmm.receiveItems(data);
         pfmm.updateSimulationData();
         pfmm.zoomTo(0.3);
     </script>
@@ -109,4 +107,4 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
 - BSD 2 clause
 
 ### Version
-1.3.4
+1.3.5
