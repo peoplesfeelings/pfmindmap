@@ -55,8 +55,8 @@ export default function define(runtime, observer) {
                 .attr("y2", d => d.target.y);
 
             // center element over point
-            node.attr("x", d => d.x - d['half_width'])
-                .attr("y", d => d.y - d['half_height']);
+            node.attr("x", d => d.x - d['half_width_fo'])
+                .attr("y", d => d.y - d['half_height_fo']);
         });
 
         invalidation.then(() => simulation.stop() );
@@ -83,7 +83,7 @@ export default function define(runtime, observer) {
 
                             newItemEl.style.boxSizing = "border-box";
                             newItemEl.style.width = options['item_width'] + "px";
-                            d['width'] = options['item_width'];
+                            d['width'] = parseInt(options['item_width']);
                             // temporarily hide it and add to dom to get height
                             newItemEl.style.visibility = "hidden";
                             document.body.appendChild(newItemEl);
@@ -92,8 +92,8 @@ export default function define(runtime, observer) {
                             newItemEl.style.visibility = "visible";
                             // do some calculations here so they are done once and not at each simulation tick
                             d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
-                            d['half_width'] = d['width'] / 2;
-                            d['half_height'] = d['height'] / 2;
+                            d['half_width_fo'] = d['width'] / 2 + 1;
+                            d['half_height_fo'] = d['height'] / 2 + 1;
 
                             if (d['is_first']) {
                                 d['fx'] = 0;
@@ -101,10 +101,12 @@ export default function define(runtime, observer) {
                             }
 
                             let newRawFo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
-                            newRawFo.setAttribute("width", d['width']);
-                            newRawFo.setAttribute("height", d['height']);
+                            // prevents artifacts
+                            newRawFo.style.padding = "1px";
+                            // add 2 for artifact padding
+                            newRawFo.setAttribute("width", d['width'] + 2); 
+                            newRawFo.setAttribute("height", d['height'] + 2); 
                             newRawFo.setAttribute("transform", mutableTransform.value);
-                            newRawFo.style.willChange = "transform";
                             newRawFo.appendChild(newItemEl);
 
                             return newRawFo;
