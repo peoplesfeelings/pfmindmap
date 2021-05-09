@@ -6,7 +6,7 @@ To provide an easy way to implement a mind map interface. Useful for discussion 
 - works as reactive (continuous updates) or otherwise 
 - entering items enter gracefully, near to the most recent ancestor that was already placed
 - natural-looking, stable tree that makes economical use of space (accomplished with D3's force simulation)
-- scales to thousands of replies
+- scales to thousands of diagram items
 - diagram items are customizable in appearance and data model (you provide HTML for item, and a populator function)
 - zoom and pan like a map interface
 - draggable items
@@ -41,7 +41,7 @@ To provide an easy way to implement a mind map interface. Useful for discussion 
 + required keys:
     + <b>id</b>: unique string
     + <b>reply_to_id</b>: matching <b>id</b> of other item
-    + <b>is_first</b>: only required for one item, the root item. boolean true, otherwise false or just don&apos;t include it. marks the beginning message of the conversation
+    + <b>is_first</b>: only required for one item, the root item. boolean true, otherwise false or just don&apos;t include it. marks the root item.
 + Include whatever other key/value pairs you want. You will receive them in your populator function <b>data</b> argument, to populate your item element with
 
 ### Notes
@@ -85,11 +85,11 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
         ];
         var itemCreator = () => {
             return document.querySelector('.item-to-clone').cloneNode(true);
-        }
+        };
         var itemPopulator = (item, data) => { 
             item.innerHTML = data["message"];
             return item; 
-        }
+        };
         var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, { 'item_width': '300'});
         pfmm.receiveItems(data);
         pfmm.updateSimulationData();
