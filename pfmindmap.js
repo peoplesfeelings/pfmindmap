@@ -4,17 +4,16 @@ pfmindmap
 copyright people's feelings 2020
 github.com/peoplesfeelings/pfmindmap
 
-
 */
 
 import "./dependencies/d3/d3.v6.min.js";
 import {Runtime, Library, Inspector} from './dependencies/observable/runtime.js';
-import define from './notebook.js?v=1.3.6';
+import define from './notebook.js?v=1.4';
 
 
 const   TAG = 'pfmm - ',
         OPTIONS_DEFAULTS = {
-            'item_width': '200'
+            'item_width': 200
         };
 
 export default class { 
@@ -33,6 +32,9 @@ export default class {
         }
         if (typeof(options) != 'object') {
             this.error('constructor fourth parameter should be an object');
+        }
+        if ('item_width' in options && typeof(options['item_width']) != 'number') {
+            this.error("options['item_width'] should be a number");
         }
         this.store = new store();
         this.combinedOptions = Object.assign({}, OPTIONS_DEFAULTS, options);

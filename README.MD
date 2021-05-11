@@ -25,7 +25,7 @@ To provide an easy way to implement a mind map interface. Useful for discussion 
 - <b>options</b>: options object
 
 ### Options
-- <b>item_width</b>: string with numerical characters only. unit is pixels. default is '200'.
+- <b>item_width</b>: numerical value. unit is pixels. default is 200
 
 ### Methods
 - <b>receiveItem(data)</b>: takes a data object
@@ -90,7 +90,7 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
             item.innerHTML = data["message"];
             return item; 
         };
-        var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, { 'item_width': '300'});
+        var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, { 'item_width': 300 });
         pfmm.receiveItems(data);
         pfmm.updateSimulationData();
         pfmm.zoomTo(0.3);
@@ -107,4 +107,4 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
 - BSD 2 clause
 
 ### Version
-1.3.6
+1.4

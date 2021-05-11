@@ -9,7 +9,6 @@ github.com/peoplesfeelings/pfmindmap
 /* 
     observable notebook like from observablehq.com
 */
-
 export default function define(runtime, observer) {
     const main = runtime.module();
     const CONSOLE_TAG = "notebook - ";
@@ -83,7 +82,7 @@ export default function define(runtime, observer) {
 
                             newItemEl.style.boxSizing = "border-box";
                             newItemEl.style.width = options['item_width'] + "px";
-                            d['width'] = parseInt(options['item_width']);
+                            d['width'] = options['item_width'];
                             // temporarily hide it and add to dom to get height
                             newItemEl.style.visibility = "hidden";
                             document.body.appendChild(newItemEl);
