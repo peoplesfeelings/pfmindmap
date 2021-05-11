@@ -32,8 +32,8 @@ To provide an easy way to implement a mind map interface. Useful for discussion 
 - <b>receiveItems(array)</b>: takes an array of data objects
 - <b>updateSimulationData()</b>: updates the visualization
 - <b>zoomTo(level)</b>: to set zoom level, manually, if you want. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
-- <b>freeze()</b>: freezes the simlation. It will unfreeze again if the user drags an item. 
-- <b>centerView()</b>: centers the diagram in the viewport
+- <b>freeze()</b>: a way to temporarily freeze the simlation, manually, if you want 
+- <b>centerView()</b>: a way to center the diagram in the viewport, such as if the user has panned and wants to recenter
 - <b>untangle()</b>: a way to untangle anything that might be tangled in the diagram
 
 ### Item data format

@@ -90,7 +90,7 @@ export default function define(runtime, observer) {
                             d['height'] = newItemEl.getBoundingClientRect().height;
                             newItemEl.remove();
                             newItemEl.style.visibility = "visible";
-                            // do some calculations here so they are done once and not at each simulation tick
+                            // do some calculations here so they are done once 
                             d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
                             d['half_width_fo'] = d['width'] / 2 + 1;
                             d['half_height_fo'] = d['height'] / 2 + 1;
