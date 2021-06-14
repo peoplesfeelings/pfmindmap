@@ -20,8 +20,8 @@ To provide an easy way to implement a mind map interface. Useful for discussion 
 
 ### Class constructor parameters
 - <b>containerEl</b>: DOM element of visualization container
-- <b>itemCreator</b>: function that returns an HTML element for an item
-- <b>itemPopulator</b>: function that populates your item elements. should have <b>(el, data)</b> for parameters and return the element it&apos;s passed, populated. (see example, below)
+- <b>itemCreator</b>: function that returns an HTML element for an item (not populated with data)
+- <b>itemPopulator</b>: function that populates an item HTML element. should have <b>(el, data)</b> for parameters and return the element it&apos;s passed, populated.
 - <b>options</b>: options object
 
 ### Options
@@ -99,12 +99,9 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
 </html>
 ```
 
-### Dependencies (included)
-- D3 v6
-- Observable runtime (v4.8.0)
+### Built with
+- D3 v6.3.0
+- Observable runtime v4.8.0
 
 ### License
 - BSD 2 clause
-
-### Version
-1.4

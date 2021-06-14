@@ -9,6 +9,9 @@ github.com/peoplesfeelings/pfmindmap
 /* 
     observable notebook like from observablehq.com
 */
+
+import * as d3 from "d3";
+
 export default function define(runtime, observer) {
     const main = runtime.module();
     const CONSOLE_TAG = "notebook - ";

@@ -1,0 +1,28 @@
+{
+  "name": "pfmindmap",
+  "version": "1.5.0",
+  "description": "\"Pfmindmap is a mind map visualizer that utilizes a force-directed layout. The primary purpose is to allow easily creating a real-time mind map discussion interface.",
+  "main": "pfmindmap.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peoplesfeelings/pfmindmap.git"
+  },
+  "keywords": [
+    "d3",
+    "observable",
+    "discussion"
+  ],
+  "author": "people's feelings",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/peoplesfeelings/pfmindmap/issues"
+  },
+  "homepage": "https://github.com/peoplesfeelings/pfmindmap#readme",
+  "dependencies": {
+    "@observablehq/runtime": "4.8.0",
+    "d3": "6.3.0"
+  }
+}
