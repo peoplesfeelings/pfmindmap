@@ -6,9 +6,9 @@ github.com/peoplesfeelings/pfmindmap
 
 */
 
-import define from './notebook.js?v=1.4';
+import define from './notebook.js';
 import * as d3 from "d3";
-import {Runtime, Library, Inspector} from "@observablehq/runtime";
+import {Runtime, Inspector} from "@observablehq/runtime";
 
 
 const   TAG = 'pfmm - ',
