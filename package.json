@@ -1,35 +1,35 @@
 {
-  "name": "pfmindmap",
-  "version": "1.5.1",
+  "author": "people's feelings",
+  "bugs": {
+    "url": "https://github.com/peoplesfeelings/pfmindmap/issues"
+  },
+  "dependencies": {
+    "@observablehq/runtime": "4.8.0",
+    "d3": "6.3.0"
+  },
   "description": "Pfmindmap is a mind map visualizer that utilizes a force-directed layout. The primary purpose is to allow easily creating a real-time mind map discussion interface.",
-  "main": "src/main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build_umd": "rollup -c",
-    "pack_tarball": "npm pack"
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "rollup": "^2.51.2"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/peoplesfeelings/pfmindmap.git"
-  },
+  "homepage": "https://github.com/peoplesfeelings/pfmindmap#readme",
   "keywords": [
     "d3",
     "observable",
     "discussion",
     "mindmap"
   ],
-  "author": "people's feelings",
   "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/peoplesfeelings/pfmindmap/issues"
+  "main": "src/main.js",
+  "name": "pfmindmap",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peoplesfeelings/pfmindmap.git"
   },
-  "homepage": "https://github.com/peoplesfeelings/pfmindmap#readme",
-  "dependencies": {
-    "@observablehq/runtime": "4.8.0",
-    "d3": "6.3.0"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build_umd": "rollup -c",
+    "pack_tarball": "npm pack"
   },
-  "devDependencies": {
-    "@rollup/plugin-node-resolve": "^13.0.0",
-    "rollup": "^2.51.2"
-  }
+  "version": "1.5.1"
 }
