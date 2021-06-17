@@ -10,7 +10,9 @@
   "description": "Pfmindmap is a mind map visualizer that utilizes a force-directed layout. The primary purpose is to allow easily creating a real-time mind map discussion interface.",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.0",
-    "rollup": "^2.51.2"
+    "rollup": "^2.51.2",
+    "rollup-plugin-banner": "^0.2.1",
+    "rollup-plugin-license": "^2.5.0"
   },
   "homepage": "https://github.com/peoplesfeelings/pfmindmap#readme",
   "keywords": [
@@ -21,6 +23,7 @@
   ],
   "license": "BSD-2-Clause",
   "main": "src/main.js",
+  "module": "src/main.js",
   "name": "pfmindmap",
   "repository": {
     "type": "git",
@@ -28,8 +31,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build_umd": "rollup -c",
-    "pack_tarball": "npm pack"
+    "makebundle": "rollup -c",
+    "packtarball": "npm pack"
   },
+  "type": "module",
   "version": "1.5.1"
 }

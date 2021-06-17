@@ -13,6 +13,32 @@ To provide an easy way to implement a mind map interface. Useful for discussion 
 - handles window resize events
 - data can arrive out of order (only items that can be placed in the tree are displayed)
 
+### Installation
+There are two ways to install this module.
+
+**For JS apps that support ES modules and Node Module Resolution:**
+```
+npm install github:peoplesfeelings/pfmindmap#react
+```
+and then
+```
+import pfmindmap from "pfmindmap";
+```
+
+**For web pages that are not bundled JS apps, and other cases:**
+```
+git clone https://github.com/peoplesfeelings/pfmindmap#react
+git checkout react
+npm install
+npm run makebundle
+```
+That will generate a bundle in the `/dist` directory that includes the dependencies. Import that like this:
+```
+<script type="module"> 
+    import pfmindmap from 'path/to/pfmindmap_bundle.js'; 
+</script>
+```
+
 ### Usage
 1. Instantiate the default class export of this ES module.
 2. Start sending data to your pfmindmap instance&apos;s <b>receiveItem</b> or <b>receiveItems</b> methods. 
@@ -52,8 +78,7 @@ To provide an easy way to implement a mind map interface. Useful for discussion 
 - To add a message submit form, put a reply button in your item element, with a listener that shows a message submit form, and sends that form the <b>id</b> being replied to. 
 - Submit the user&apos;s message from your form to your app&apos;s backend. Then the user&apos;s message can get populated to the interface in the same way as the rest of the data.
 
-### Complete Example
-Clone this repo, put the directory (named "pfmindmap") in the same directory as the following HTML file, and open it in a web server.
+### Example
 ```
 <html>
 <head>
@@ -70,7 +95,7 @@ Clone this repo, put the directory (named "pfmindmap") in the same directory as 
     </div>
 
     <script type="module">
-        import pfmindmap from './pfmindmap/pfmindmap.js';
+        import pfmindmap from 'path/pfmindmap_bundle.js';
         
         var data = [
             { 'id': '8843784378', 'reply_to_id': '', 'message': 'wazaaa', 'is_first': true },
