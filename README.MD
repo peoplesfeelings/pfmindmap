@@ -16,7 +16,7 @@ To provide an easy way to implement a mind map interface. Useful for discussion 
 ### Installation
 There are two ways to install this module.
 
-**For JS apps that support ES modules and Node Module Resolution:**
+**For JS apps that support ES modules and NodeJS module resolution:**
 ```
 npm install github:peoplesfeelings/pfmindmap#react
 ```
@@ -27,7 +27,7 @@ import pfmindmap from "pfmindmap";
 
 **For web pages that are not bundled JS apps, and other cases:**
 ```
-git clone https://github.com/peoplesfeelings/pfmindmap#react
+git clone https://github.com/peoplesfeelings/pfmindmap.git
 git checkout react
 npm install
 npm run makebundle
