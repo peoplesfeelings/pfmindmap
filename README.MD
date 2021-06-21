@@ -18,7 +18,7 @@ There are two ways to install this module.
 
 **For JS apps that support ES modules and NodeJS module resolution:**
 ```
-npm install github:peoplesfeelings/pfmindmap#react
+npm install github:peoplesfeelings/pfmindmap
 ```
 and then
 ```
