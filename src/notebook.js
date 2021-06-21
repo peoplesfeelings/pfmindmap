@@ -25,8 +25,8 @@ export default function define(runtime, observer) {
             .alphaMin(.6001)
             .alphaTarget(.6)
             .velocityDecay(0.7)
-            .force("link", d3.forceLink().id(d => d.id).distance(options['item_width']).iterations(5).strength(0.8))
-            .force("charge", d3.forceManyBody().strength(-55000).distanceMin(options['item_width']))
+            .force("link", d3.forceLink().id(d => d.id).distance(options.item_width).iterations(5).strength(0.8))
+            .force("charge", d3.forceManyBody().strength(-55000).distanceMin(options.item_width))
             .force("collision", d3.forceCollide(d => d.radius).iterations(1))
             .force("x", d3.forceX().strength(0.25))
             .force("y", d3.forceY().strength(0.25));
@@ -57,8 +57,8 @@ export default function define(runtime, observer) {
                 .attr("y2", d => d.target.y);
 
             // center element over point
-            node.attr("x", d => d.x - d['half_width_fo'])
-                .attr("y", d => d.y - d['half_height_fo']);
+            node.attr("x", d => d.x - d.half_width_fo)
+                .attr("y", d => d.y - d.half_height_fo);
         });
 
         invalidation.then(() => simulation.stop() );
@@ -84,30 +84,30 @@ export default function define(runtime, observer) {
                             let newItemEl = populate(itemCreator(), d);
 
                             newItemEl.style.boxSizing = "border-box";
-                            newItemEl.style.width = options['item_width'] + "px";
-                            d['width'] = options['item_width'];
+                            newItemEl.style.width = options.item_width + "px";
+                            d.width = options.item_width;
                             // temporarily hide it and add to dom to get height
                             newItemEl.style.visibility = "hidden";
                             document.body.appendChild(newItemEl);
-                            d['height'] = newItemEl.getBoundingClientRect().height;
+                            d.height = newItemEl.getBoundingClientRect().height;
                             newItemEl.remove();
                             newItemEl.style.visibility = "visible";
                             // do some calculations here so they are done once 
-                            d['radius'] = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
-                            d['half_width_fo'] = d['width'] / 2 + 1;
-                            d['half_height_fo'] = d['height'] / 2 + 1;
+                            d.radius = Math.sqrt(d.width * d.width + d.height * d.height) / 2;
+                            d.half_width_fo = d.width / 2 + 1;
+                            d.half_height_fo = d.height / 2 + 1;
 
-                            if (d['is_first']) {
-                                d['fx'] = 0;
-                                d['fy'] = 0;
+                            if (d.is_first) {
+                                d.fx = 0;
+                                d.fy = 0;
                             }
 
                             let newRawFo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
                             // prevents artifacts
                             newRawFo.style.padding = "1px";
                             // add 2 for artifact padding
-                            newRawFo.setAttribute("width", d['width'] + 2); 
-                            newRawFo.setAttribute("height", d['height'] + 2); 
+                            newRawFo.setAttribute("width", d.width + 2); 
+                            newRawFo.setAttribute("height", d.height + 2); 
                             newRawFo.setAttribute("transform", mutableTransform.value);
                             newRawFo.setAttribute("data-pfmm-id", d.id);
                             newRawFo.appendChild(newItemEl);
@@ -137,28 +137,28 @@ export default function define(runtime, observer) {
                     return [x + opp, y + Math.sqrt(r * r + opp * opp)];
                 }
                 function setPosToAncestor(itemDatum, itemsData) {
-                    if (itemDatum['is_first']) {
+                    if (itemDatum.is_first) {
                         return;
                     }
-                    let firstParentWithPos = getFirstAncestorWithPos(itemDatum['reply_to_id'], itemsData);
+                    let firstParentWithPos = getFirstAncestorWithPos(itemDatum.reply_to_id, itemsData);
                     if (firstParentWithPos !== null) {
-                        let posAtEdgeOfParent = movePosByRadius(firstParentWithPos['x'], firstParentWithPos['y'], firstParentWithPos['radius'] * 2);
+                        let posAtEdgeOfParent = movePosByRadius(firstParentWithPos.x, firstParentWithPos.y, firstParentWithPos.radius * 2);
 
-                        itemDatum['x'] = posAtEdgeOfParent[0];
-                        itemDatum['y'] = posAtEdgeOfParent[1];
+                        itemDatum.x = posAtEdgeOfParent[0];
+                        itemDatum.y = posAtEdgeOfParent[1];
                     }
                 }
                 function getFirstAncestorWithPos(parentId, data) {
                     /* first parent with position, unless it's the root node */
                     for (var item of data) {
-                        if (item['id'] == parentId) {
-                            if (item['is_first']) {
+                        if (item.id == parentId) {
+                            if (item.is_first) {
                                 return null;
                             }
                             if ('x' in item && 'y' in item) {
                                 return item;
                             } else {
-                                return getFirstAncestorWithPos(item['reply_to_id'], data);
+                                return getFirstAncestorWithPos(item.reply_to_id, data);
                             }
                         }
                     }
@@ -179,7 +179,7 @@ export default function define(runtime, observer) {
                 function subject(event, d) {
                     const   x = mutableTransform.value.invertX(event.x),
                             y = mutableTransform.value.invertY(event.y),
-                            node = nodeFinder(dataNodesWithOld, x, y, options['item_width']);
+                            node = nodeFinder(dataNodesWithOld, x, y, options.item_width);
                     if (node) {
                         node.x = mutableTransform.value.applyX(node.x);
                         node.y = mutableTransform.value.applyY(node.y);
@@ -220,8 +220,8 @@ export default function define(runtime, observer) {
                 simulation.force("y", null);
 
                 simulation.velocityDecay(0.1)
-                    .force("link", d3.forceLink(stashedLink.links()).id(d => d.id).distance(options['item_width']*30).iterations(30).strength(1))
-                    .force("charge", d3.forceManyBody().strength(-155000).distanceMin(options['item_width'] * 10));
+                    .force("link", d3.forceLink(stashedLink.links()).id(d => d.id).distance(options.item_width*30).iterations(30).strength(1))
+                    .force("charge", d3.forceManyBody().strength(-155000).distanceMin(options.item_width * 10));
 
                 simulation.alpha(1).tick(100).restart();
 
@@ -243,10 +243,10 @@ export default function define(runtime, observer) {
         function createLinkArray(dataNodes) {
             let links = [];
             for (var item of dataNodes) {
-                if (item['is_first']) {
+                if (item.is_first) {
                     continue;
                 }
-                links.push({source: item['id'], target: item['reply_to_id']});
+                links.push({source: item.id, target: item.reply_to_id});
             }
             return links;
         }
@@ -269,7 +269,7 @@ export default function define(runtime, observer) {
                 let isFirstEvent = true;
                 function dragstarted(event, d) {
                     // root node not draggable
-                    if (d['is_first']) { return; }
+                    if (d.is_first) { return; }
                     // fixed issue in which drag start, while simulation was cooling, would cause the item to teleport elsewhere, until dragged event occurred
                     let transform = d3.zoomTransform(this);
                     d.x = transform.invertX(event.x);
@@ -277,7 +277,7 @@ export default function define(runtime, observer) {
                 }
                 function dragged(event, d) {
                     // root node not draggable
-                    if (d['is_first']) { return; }
+                    if (d.is_first) { return; }
                     // note that the isFirstEvent variable is not related to the 'is_first' data key
                     // using isFirstEvent is a solution to the issue of drag getting activated for click events. 
                     // (this stuff would normally be in dragstarted)
@@ -291,7 +291,7 @@ export default function define(runtime, observer) {
                 }
                 function dragended(event, d) {
                     // root node not draggable
-                    if (d['is_first']) { return; }
+                    if (d.is_first) { return; }
                     isFirstEvent = true;
                     if (!event.active) simulation.alphaMin(0.6001).alpha(.61);
                     d.fx = null;
