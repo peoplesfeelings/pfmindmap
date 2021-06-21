@@ -2,10 +2,10 @@
 It&apos;s a JavaScript ES6 module. The default export is a class.
 
 ### Purpose 
-To provide an easy way to implement a mind map interface. Useful for discussion interfaces or hierarchical data visualizations. It's kind of a D3 wrapper that gives you a certain set of features ready to go, and extends simple endpoints. That feature set is:
+To provide an easy way to implement a mind map interface. Useful for discussion interfaces or hierarchical data visualizations. It&apos;s kind of a D3 wrapper that gives you a certain set of features ready to go, and extends simple endpoints. That feature set is:
 - works as reactive (continuous updates) or otherwise 
 - entering items enter gracefully, near to the most recent ancestor that was already placed
-- natural-looking, stable tree that makes economical use of space (accomplished with D3's force simulation)
+- natural-looking, stable tree that makes economical use of space (accomplished with D3&apos;s force simulation)
 - scales to thousands of diagram items
 - diagram items are customizable in appearance and data model (you provide HTML for item, and a populator function)
 - zoom and pan like a map interface
@@ -45,9 +45,9 @@ That will generate a bundle in the `/dist` directory that includes the dependenc
 3. Call the <b>updateSimulationData</b> method when you want the visualization to update.
 
 ### Class constructor parameters
-- <b>containerEl</b>: DOM element of visualization container
-- <b>itemCreator</b>: function that returns an HTML element for an item (not populated with data)
-- <b>itemPopulator</b>: function that populates an item HTML element. should have <b>(el, data)</b> for parameters and return the element it&apos;s passed, populated.
+- <b>containerEl</b>: DOM element (or ReactRef) of visualization container
+- <b>itemCreator</b>: Function that returns an HTML element for an item (not populated with data)
+- <b>itemPopulator</b>: Function that populates an item HTML element with data. Should have <b>(el, data)</b> for parameters and return the element it&apos;s passed, populated.
 - <b>options</b>: options object
 
 ### Options
@@ -75,7 +75,9 @@ That will generate a bundle in the `/dist` directory that includes the dependenc
 - This module loads D3 to the DOM, so <b>d3</b> will be accessible anywhere, after instantiating the default class export of this module.
 
 ### To use as a discussion interface
-- To add a message submit form, put a reply button in your item element, with a listener that shows a message submit form, and sends that form the <b>id</b> being replied to. 
+- To add a message submit form, put a reply button in your item element, with a listener that shows a message submit form and sends that form the <b>id</b> being replied to. 
+- If you are cloning an element in your itemCreator function then event handlers don&apos;t get cloned but you can use event delegation: put the listener on the container and check for the intended event.target in that handler. 
+- You can get the **id** by finding the parent **foreignObject** of your item element and getting the **data-pfmm-id** attribute value from it. Ex: `event.target.closest('foreignObject').dataset.pfmmId`
 - Submit the user&apos;s message from your form to your app&apos;s backend. Then the user&apos;s message can get populated to the interface in the same way as the rest of the data.
 
 ### Example

@@ -70,7 +70,7 @@ export default function define(runtime, observer) {
         }
 
         return Object.assign(svg.node(), {
-            // d3 pattern for introducing new data while keeping position data of existing data
+            // d3 pattern for adding new items while keeping position data of existing items
             update: (dataNodes, dataLinks) => {
                 const   oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d])),
                         dataNodesWithOld = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
@@ -79,7 +79,7 @@ export default function define(runtime, observer) {
                 node = node.data(dataNodesWithOld, d => d.id)
                     .join(
                         enter => enter.append(function(d) {
-                            // entering items get positioned next to most recent ancestor with position
+                            // entering items get positioned next to most recent ancestor that has position
                             setPosToAncestor(d, dataNodesWithOld);
                             let newItemEl = populate(itemCreator(), d);
 
@@ -109,6 +109,7 @@ export default function define(runtime, observer) {
                             newRawFo.setAttribute("width", d['width'] + 2); 
                             newRawFo.setAttribute("height", d['height'] + 2); 
                             newRawFo.setAttribute("transform", mutableTransform.value);
+                            newRawFo.setAttribute("data-pfmm-id", d.id);
                             newRawFo.appendChild(newItemEl);
 
                             return newRawFo;
