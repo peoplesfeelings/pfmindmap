@@ -41,41 +41,41 @@ That will generate a bundle in the `/dist` directory that includes the dependenc
 
 ### Usage
 1. Instantiate the default class export of this ES module.
-2. Start sending data to your pfmindmap instance&apos;s <b>receiveItem</b> or <b>receiveItems</b> methods. 
-3. Call the <b>updateSimulationData</b> method when you want the visualization to update.
+2. Start sending data to your pfmindmap instance&apos;s **receiveItem** or **receiveItems** methods. 
+3. Call the **updateSimulationData** method when you want the visualization to update.
 
 ### Class constructor parameters
-- <b>containerEl</b>: DOM element (or ReactRef) of visualization container
-- <b>itemCreator</b>: Function that returns an HTML element for an item (not populated with data)
-- <b>itemPopulator</b>: Function that populates an item HTML element with data. Should have <b>(el, data)</b> for parameters and return the element it&apos;s passed, populated.
-- <b>options</b>: options object
+- **containerEl**: DOM element (or ReactRef) of visualization container
+- **itemCreator**: Function that returns an HTML element for an item (not populated with data)
+- **itemPopulator**: Function that populates an item HTML element with data. Should have **(el, data)** for parameters and return the element it&apos;s passed, populated.
+- **options**: options object
 
 ### Options
-- <b>item_width</b>: numerical value. unit is pixels. default is 200
+- **item_width**: numerical value. unit is pixels. default is 200
 
 ### Methods
-- <b>receiveItem(data)</b>: takes a data object
-- <b>receiveItems(array)</b>: takes an array of data objects
-- <b>updateSimulationData()</b>: updates the visualization
-- <b>zoomTo(level)</b>: to set zoom level, manually, if you want. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
-- <b>freeze()</b>: a way to temporarily freeze the simlation, manually, if you want 
-- <b>centerView()</b>: a way to center the diagram in the viewport, such as if the user has panned and wants to recenter
-- <b>untangle()</b>: a way to untangle anything that might be tangled in the diagram
+- **receiveItem(data)**: takes a data object
+- **receiveItems(array)**: takes an array of data objects
+- **updateSimulationData()**: updates the visualization
+- **zoomTo(level)**: to set zoom level, manually, if you want. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
+- **freeze()**: a way to temporarily freeze the simlation, manually, if you want 
+- **centerView()**: a way to center the diagram in the viewport, such as if the user has panned and wants to recenter
+- **untangle()**: a way to untangle anything that might be tangled in the diagram
 
 ### Item data format
 + JSON object
 + required keys:
-    + <b>id</b>: unique string
-    + <b>reply_to_id</b>: matching <b>id</b> of other item
-    + <b>is_first</b>: only required for one item, the root item. boolean true, otherwise false or just don&apos;t include it. marks the root item.
-+ Include whatever other key/value pairs you want. You will receive them in your populator function <b>data</b> argument, to populate your item element with
+    + **id**: unique string
+    + **reply_to_id**: matching **id** of other item
+    + **is_first**: only required for one item, the root item. boolean true, otherwise false or just don&apos;t include it. marks the root item.
++ Include whatever other key/value pairs you want. You will receive them in your populator function **data** argument, to populate your item element with
 
 ### Notes
-- For continuous updates, just keep sending it data, with the <b>receiveItem</b> or <b>receiveItems</b> methods, and call the <b>updateSimulationData</b> method when you want the new items to be appended to the diagram.
-- This module loads D3 to the DOM, so <b>d3</b> will be accessible anywhere, after instantiating the default class export of this module.
+- For continuous updates, just keep sending it data, with the **receiveItem** or **receiveItems** methods, and call the **updateSimulationData** method when you want the new items to be appended to the diagram.
+- This module loads D3 to the DOM, so **d3** will be accessible anywhere, after instantiating the default class export of this module.
 
 ### To use as a discussion interface
-- To add a message submit form, put a reply button in your item element, with a listener that shows a message submit form and sends that form the <b>id</b> being replied to. 
+- To add a message submit form, put a reply button in your item element, with a listener that shows a message submit form and sends that form the **id** being replied to. 
 - If you are cloning an element in your itemCreator function then event handlers don&apos;t get cloned but you can use event delegation: put the listener on the container and check for the intended event.target in that handler. 
 - You can get the **id** by finding the parent **foreignObject** of your item element and getting the **data-pfmm-id** attribute value from it. Ex: `event.target.closest('foreignObject').dataset.pfmmId`
 - Submit the user&apos;s message from your form to your app&apos;s backend. Then the user&apos;s message can get populated to the interface in the same way as the rest of the data.
