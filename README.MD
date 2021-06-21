@@ -28,7 +28,7 @@ import pfmindmap from "pfmindmap";
 **For web pages that are not bundled JS apps, and other cases:**
 ```
 git clone https://github.com/peoplesfeelings/pfmindmap.git
-git checkout react
+cd pfmindmap
 npm install
 npm run makebundle
 ```
