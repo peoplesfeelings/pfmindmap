@@ -3,7 +3,7 @@ It&apos;s a JavaScript ES6 module. The default export is a class.
 
 ### Purpose 
 To provide an easy way to implement a mind map interface. Useful for discussion interfaces or hierarchical data visualizations. It&apos;s kind of a D3 wrapper that gives you a certain set of features ready to go, and extends simple endpoints. That feature set is:
-- works as reactive (continuous updates) or otherwise 
+- diagram items can be continually added
 - entering items enter gracefully, near to the most recent ancestor that was already placed
 - natural-looking, stable tree that makes economical use of space (accomplished with D3&apos;s force simulation)
 - scales to thousands of diagram items
@@ -97,7 +97,7 @@ That will generate a bundle in the `/dist` directory that includes the dependenc
     </div>
 
     <script type="module">
-        import pfmindmap from 'path/pfmindmap_bundle.js';
+        import pfmindmap from 'path/to/pfmindmap_bundle.js';
         
         var data = [
             { 'id': '8843784378', 'reply_to_id': '', 'message': 'wazaaa', 'is_first': true },
