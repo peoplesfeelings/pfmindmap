@@ -13,7 +13,8 @@ import {Runtime, Inspector} from "@observablehq/runtime";
 
 const   TAG = 'pfmm - ',
         OPTIONS_DEFAULTS = {
-            'item_width': 200
+            'item_width': 200,
+            'force_unique_ids': true
         };
 
 export default class { 
@@ -36,8 +37,8 @@ export default class {
         if ('item_width' in options && typeof(options['item_width']) != 'number') {
             this.error("options['item_width'] should be a number");
         }
-        this.store = new store();
         this.combinedOptions = Object.assign({}, OPTIONS_DEFAULTS, options);
+        this.store = new store(this.combinedOptions);
 
         this.main = new Runtime().module(define, notebookVariable => {
             if (notebookVariable === "chart") {
@@ -76,9 +77,6 @@ export default class {
             .style("cursor", "move");
     }
 
-    receiveItem(itemData) {
-        this.store.addItem(itemData);
-    }
     receiveItems(dataArray) {
         this.store.addItems(dataArray);
     }
@@ -118,19 +116,22 @@ export default class {
 }
 
 class store {
-    constructor() {
+    constructor(opts) {
         this._placed = [];
         this._unplaced = [];
-    }
-    addItem(item) {
-        if (this.parentIsPlaced(item)) {
-            this._placed.push(item);
-        } else {
-            this._unplaced.push(item);
-        }
+        this._opts = opts;
     }
     addItems(items) {
-        Array.prototype.push.apply(this._unplaced, items)
+        if (this._opts.force_unique_ids) {
+            for (let i = 0; i < items.length; i++) {
+                if (this.isPlaced(items[i])) {
+                    items.splice(i, 1);
+                    i--;
+                }
+            }
+        } 
+
+        Array.prototype.push.apply(this._unplaced, items);
     }
     placeUnplaced() {
         var needToGoAgain = false;
@@ -149,6 +150,9 @@ class store {
     }
     parentIsPlaced(item) {
         return this._placed.find(obj => obj['id'] == item['reply_to_id']) || item['is_first'];
+    }
+    isPlaced(item) {
+        return this._placed.find(obj => obj['id'] == item['id']);
     }
     getData() {
         return this._placed;

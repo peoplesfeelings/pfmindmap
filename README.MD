@@ -41,7 +41,7 @@ That will generate a bundle in the `/dist` directory that includes the dependenc
 
 ### Usage
 1. Instantiate the default class export of this ES module.
-2. Start sending data to the pfmindmap instance&apos;s **receiveItem** or **receiveItems** methods. 
+2. Start sending data to the pfmindmap instance&apos;s **receiveItems** method. 
 3. Call the **updateSimulationData** method for the visualization to update.
 
 ### Class constructor parameters
@@ -51,10 +51,10 @@ That will generate a bundle in the `/dist` directory that includes the dependenc
 - **options**: Options object
 
 ### Options
-- **item_width**: Numerical value. The unit is pixels. The default is 200.
+- **item_width**: Numerical. The unit is pixels. Default: 200
+- **force_unique_ids**: Boolean. Set false for some performance improvement, if the implementing app can ensure no duplicate data items. Default: true
 
 ### Methods
-- **receiveItem(data)**: Endpoint where implementing app sends data. Takes a data object
 - **receiveItems(array)**: Endpoint where implementing app sends data. Takes an array of data objects
 - **updateSimulationData()**: Update the visualization. This does not happen automatically when data is received by the module, so the implementing app may inform the user when new items are ready to be added, and let the user control when they are added.
 - **zoomTo(level)**: Set zoom level, manually. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
