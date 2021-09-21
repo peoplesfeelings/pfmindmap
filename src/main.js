@@ -34,8 +34,11 @@ export default class {
         if (typeof(options) != 'object') {
             this.error('constructor fourth parameter should be an object');
         }
-        if ('item_width' in options && typeof(options['item_width']) != 'number') {
-            this.error("options['item_width'] should be a number");
+        if ('item_width' in options && typeof(options.item_width) != 'number') {
+            this.error("option.item_width should be a number");
+        }
+        if ('force_unique_ids' in options && typeof(options.force_unique_ids) != 'boolean') {
+            this.error("option.force_unique_ids should be a boolean");
         }
         this.combinedOptions = Object.assign({}, OPTIONS_DEFAULTS, options);
         this.store = new store(this.combinedOptions);
@@ -139,10 +142,10 @@ class store {
         }
     }
     parentIsPlaced(item) {
-        return this._placed.find(obj => obj['id'] == item['reply_to_id']) || item['is_first'];
+        return this._placed.find(obj => obj.id == item.reply_to_id) || item.is_first;
     }
     isPlaced(item) {
-        return this._placed.find(obj => obj['id'] == item['id']);
+        return this._placed.find(obj => obj.id == item.id);
     }
     getData() {
         return this._placed;
