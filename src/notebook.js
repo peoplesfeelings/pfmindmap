@@ -30,7 +30,7 @@ export default function define(runtime, observer) {
             .force("x", d3.forceX().strength(0.25))
             .force("y", d3.forceY().strength(0.25));
 
-        const svg = d3.create("svg")
+        const svgSelection = d3.create("svg")
             .attr("viewBox", [-1*dimens[0] / 2, -1*dimens[1] / 2, dimens[0], dimens[1]]);
 
         let zoom = d3.zoom()
@@ -38,25 +38,25 @@ export default function define(runtime, observer) {
             .scaleExtent([0.01, 8])
             .on("zoom", zoomed);
 
-        svg.call(zoom);
+        svgSelection.call(zoom);
 
-        let link = svg.append("g")
+        let lineSelection = svgSelection.append("g")
             .attr("stroke", "#000")
             .attr("stroke-opacity", 0.7)
             .attr("stroke-width", 6)
             .selectAll("line");
 
-        let node = svg.append("g")
+        let foSelection = svgSelection.append("g")
             .selectAll("foreignObject");
 
         simulation.on("tick", () => {
-            link.attr("x1", d => d.source.x)
+            lineSelection.attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
 
             // center element over point
-            node.attr("x", d => d.x - d.half_width_fo)
+            foSelection.attr("x", d => d.x - d.half_width_fo)
                 .attr("y", d => d.y - d.half_height_fo);
         });
 
@@ -64,18 +64,18 @@ export default function define(runtime, observer) {
 
         function zoomed({transform}) {
             mutableTransform.value = transform;
-            node.attr("transform", transform);
-            link.attr("transform", transform);
+            foSelection.attr("transform", transform);
+            lineSelection.attr("transform", transform);
         }
 
-        return Object.assign(svg.node(), {
+        return Object.assign(svgSelection.node(), {
             // d3 pattern for adding new items while keeping position data of existing items
             update: (dataNodes, dataLinks) => {
-                const   oldNodeDataWithIdKeys = new Map(node.data().map(d => [d.id, d])),
+                const   oldNodeDataWithIdKeys = new Map(foSelection.data().map(d => [d.id, d])),
                         dataNodesWithOld = dataNodes.map(d => Object.assign(oldNodeDataWithIdKeys.get(d.id) || {}, d));
 
                 // update the svg elements
-                node = node.data(dataNodesWithOld, d => d.id)
+                foSelection = foSelection.data(dataNodesWithOld, d => d.id)
                     .join(
                         enter => enter.append(function(d) {
                             // entering items get positioned next to most recent ancestor that has position
@@ -115,7 +115,7 @@ export default function define(runtime, observer) {
                         })
                     )
                     .call(drag(simulation).subject(subject));
-                link = link.data(dataLinks, d => [d.source, d.target])
+                lineSelection = lineSelection.data(dataLinks, d => [d.source, d.target])
                     .join("line")
                     .attr("transform", mutableTransform.value);
 
@@ -189,20 +189,20 @@ export default function define(runtime, observer) {
                 return oldNodeDataWithIdKeys.size;
             },
             zoomTo: (level) => {
-                svg.transition('pfmmzoomto')
+                svgSelection.transition('pfmmzoomto')
                     .duration(1500)
                     .ease(d3.easeQuadInOut)
                     .call(zoom.scaleTo, level, [0,0]);
             },
             zoomToStored: () => {
-                svg.call(zoom.scaleTo, mutableTransform.value.k, [mutableTransform.value.x,mutableTransform.value.y]);
+                svgSelection.call(zoom.scaleTo, mutableTransform.value.k, [mutableTransform.value.x,mutableTransform.value.y]);
             },
             freeze: () => {
                 simulation.stop();
             },
             centerView: () => {
                 let centeredTransform = d3.zoomIdentity.scale(mutableTransform.value.k);
-                svg.transition()
+                svgSelection.transition()
                     .duration(500)
                     .ease(d3.easeQuadInOut)
                     .call(zoom.transform, centeredTransform);
