@@ -1,6 +1,7 @@
-CHANGELOG
+CHANGE LOG
 
 1.7 
 
 Breaking changes
-- Removed "receiveItem" method. The "receiveItems" method can be used, instead.
+- Removed "receiveItem" method. The "addDataItems" method (formerly named "receiveItems") can be used, instead. Note that it takes an array.
+- Renamed "receiveItems" method to "addDataItems".

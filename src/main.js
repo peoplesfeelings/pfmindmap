@@ -77,7 +77,7 @@ export default class {
             .style("cursor", "move");
     }
 
-    receiveItems(dataArray) {
+    addDataItems(dataArray) {
         this.store.addItems(dataArray);
     }
     updateSimulationData() {

@@ -41,7 +41,7 @@ That will generate a bundle in the `/dist` directory that includes the dependenc
 
 ### Usage
 1. Instantiate the default class export of this ES module.
-2. Start sending data to the pfmindmap instance&apos;s **receiveItems** method. 
+2. Start sending data to the pfmindmap instance&apos;s **addDataItems** method. 
 3. Call the **updateSimulationData** method for the visualization to update.
 
 ### Class constructor parameters
@@ -55,11 +55,11 @@ That will generate a bundle in the `/dist` directory that includes the dependenc
 - **force_unique_ids**: Boolean. Set false for some performance improvement, if the implementing app can ensure no duplicate data items. Default: true
 
 ### Methods
-- **receiveItems(array)**: Endpoint where implementing app sends data. Takes an array of data objects
+- **addDataItems(array)**: Endpoint where implementing app sends data. Takes an array of diagram item data objects. See **Item data format** section for info on data format.
 - **updateSimulationData()**: Update the visualization. This does not happen automatically when data is received by the module, so the implementing app may inform the user when new items are ready to be added, and let the user control when they are added.
 - **zoomTo(level)**: Set zoom level, manually. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
 - **freeze()**: Temporarily freeze the simulation, manually 
-- **centerView()**: Center the diagram in the viewport, such as if the user has panned and wants to recenter
+- **centerView()**: Center the diagram in the viewport. Useful if the user has panned and wants to recenter
 - **untangle()**: Untangle anything that might be tangled in the diagram
 
 ### Item data format
@@ -68,7 +68,7 @@ That will generate a bundle in the `/dist` directory that includes the dependenc
     + **id**: unique string
     + **reply_to_id**: matching **id** of other item
     + **is_first**: only required for one item, the root item. boolean true, otherwise false or just don&apos;t include it. marks the root item.
-+ The implementing app can include any key/value pairs needed for its use case. They will be passed to the populator function.
++ The implementing app can include any custom key/value pairs needed for its use case.
 
 ### To use as a discussion interface
 - To add a message submit form, put a reply button in your item element, with a listener that shows a message submit form and sends that form the **id** being replied to. 
@@ -114,7 +114,7 @@ That will generate a bundle in the `/dist` directory that includes the dependenc
             return item; 
         };
         var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, { 'item_width': 300 });
-        pfmm.receiveItems(data);
+        pfmm.addDataItems(data);
         pfmm.updateSimulationData();
         pfmm.zoomTo(0.3);
     </script>
