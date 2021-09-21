@@ -1,7 +1,7 @@
 /*
 
 pfmindmap
-copyright people's feelings 2020
+copyright people's feelings 2021
 github.com/peoplesfeelings/pfmindmap
 
 */
@@ -14,7 +14,6 @@ import * as d3 from "d3";
 
 export default function define(runtime, observer) {
     const main = runtime.module();
-    const CONSOLE_TAG = "notebook - ";
 
     main.variable(observer("chart")).define("chart", 
       ["dimens", "drag", "invalidation", "itemCreator", "options", "mutableTransform", "populate"], 
@@ -276,7 +275,6 @@ export default function define(runtime, observer) {
                     d.y = transform.invertY(event.y);
                 }
                 function dragged(event, d) {
-                    // root node not draggable
                     if (d.is_first) { return; }
                     // note that the isFirstEvent variable is not related to the 'is_first' data key
                     // using isFirstEvent is a solution to the issue of drag getting activated for click events. 
@@ -290,7 +288,6 @@ export default function define(runtime, observer) {
                     d.fy = transform.invertY(event.y);
                 }
                 function dragended(event, d) {
-                    // root node not draggable
                     if (d.is_first) { return; }
                     isFirstEvent = true;
                     if (!event.active) simulation.alphaMin(0.6001).alpha(.61);

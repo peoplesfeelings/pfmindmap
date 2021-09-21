@@ -1,7 +1,7 @@
 /*
 
 pfmindmap
-copyright people's feelings 2020
+copyright people's feelings 2021
 github.com/peoplesfeelings/pfmindmap
 
 */
@@ -39,14 +39,14 @@ export default class {
         this.store = new store();
         this.combinedOptions = Object.assign({}, OPTIONS_DEFAULTS, options);
 
-        this.main = new Runtime().module(define, observerFunctionParam => {
-            if (observerFunctionParam === "chart") {
+        this.main = new Runtime().module(define, notebookVariable => {
+            if (notebookVariable === "chart") {
                 return new Inspector(containerEl);
             }
-            if (observerFunctionParam === "autoUpdate") {
+            if (notebookVariable === "autoUpdate") {
                 return true;
             }
-            if (observerFunctionParam === "zoomToStored") {
+            if (notebookVariable === "zoomToStored") {
                 /*
                     allows loading transform on window resize.
                     sets the internal transform of the zoom to the stored transform, whenever 
