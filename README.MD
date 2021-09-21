@@ -18,7 +18,7 @@ There are two ways to import this module.
 
 **For JS apps that support ES modules and NodeJS module resolution:**
 ```
-npm install github:peoplesfeelings/pfmindmap
+npm install pfmindmap
 ```
 then:
 ```
