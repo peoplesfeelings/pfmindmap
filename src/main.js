@@ -103,16 +103,6 @@ export default class {
     error(message) {
         throw 'pfmindmap error: ' + message;
     }
-    // debug stuff
-    getStoreString() {
-        return JSON.stringify(this.store.getData(), null, 2);
-    }
-    getUnplacedString() {
-        return JSON.stringify(this.store.getUnplaced(), null, 2);
-    }
-    info() {
-        return 'store: \n' + this.store.info();
-    }
 }
 
 class store {
@@ -156,11 +146,5 @@ class store {
     }
     getData() {
         return this._placed;
-    }
-    getUnplaced() {
-        return this._unplaced;
-    }
-    info() {
-        return '_placed length: ' + this._placed.length + '\n_unplaced length: ' + this._unplaced.length;
     }
 }
