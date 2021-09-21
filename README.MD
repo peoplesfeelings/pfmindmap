@@ -32,7 +32,7 @@ cd pfmindmap
 npm install
 npm run makebundle
 ```
-That will generate a bundle in the `/dist` directory that includes the dependencies. Import that like this:
+That will generate a JS (ES6) module format bundle in the `/dist` directory that includes the dependencies. Import that like this:
 ```
 <script type="module"> 
     import pfmindmap from 'path/to/pfmindmap_bundle.js'; 
@@ -41,7 +41,7 @@ That will generate a bundle in the `/dist` directory that includes the dependenc
 
 ### Usage
 1. Instantiate the default class export of this ES module.
-2. Start sending data to the pfmindmap instance&apos;s **addDataItems** method. 
+2. Add data using the pfmindmap instance&apos;s **addDataItems** method. 
 3. Call the **updateSimulationData** method for the visualization to update.
 
 ### Class constructor parameters

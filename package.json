@@ -7,7 +7,7 @@
     "@observablehq/runtime": "4.8.0",
     "d3": "6.3.0"
   },
-  "description": "Pfmindmap is a mind map visualizer that uses a force-directed layout. The primary purpose is to allow easily creating a real-time mind map discussion interface.",
+  "description": "JS (ES6) module that provides a mind map visualizer that uses a force-directed layout. The primary purpose is to allow easily creating a real-time mind map discussion interface.",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.0",
     "rollup": "^2.51.2",
