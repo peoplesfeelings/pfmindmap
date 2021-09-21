@@ -1,5 +1,7 @@
 CHANGE LOG
 
+This log is mainly for breaking changes.
+
 1.7 
 
 Breaking changes
