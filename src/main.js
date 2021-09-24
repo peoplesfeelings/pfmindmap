@@ -133,6 +133,7 @@ class store {
             if (this.parentIsPlaced(this._unplaced[i])) {
                 this._placed.push(this._unplaced[i]);
                 this._unplaced.splice(i, 1);
+                i--;
                 needToGoAgain = true;
             }
         }
