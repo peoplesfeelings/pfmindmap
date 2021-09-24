@@ -45,9 +45,9 @@ That will generate a JS (ES6) module format bundle in the `/dist` directory that
 3. Call the **updateSimulationData** method for the visualization to update.
 
 ### Class constructor parameters
-- **containerEl**: DOM element (or ReactRef) of visualization container
-- **itemCreator**: Function that returns an HTML element for an item (not populated with data)
-- **itemPopulator**: Function that populates an item HTML element with data. Should have **(el, data)** for parameters and return the element it&apos;s passed, populated.
+- **containerEl**: DOM element (or React ref) of visualization container
+- **itemCreator**: Function that creates a DOM element for a diagram item (not populated with data)
+- **itemPopulator**: Function that populates a diagram item DOM element with data. Should have **(el, data)** for parameters and return the element it&apos;s passed, populated.
 - **options**: Options object
 
 ### Options
