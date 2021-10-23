@@ -1,17 +1,14 @@
 /*
-
 pfmindmap
 copyright people's feelings 2021
 github.com/peoplesfeelings/pfmindmap
-
-*/
-
-/* 
-    observable notebook like from observablehq.com
 */
 
 import * as d3 from "d3";
 
+/* 
+    observable notebook like from observablehq.com
+*/
 export default function define(runtime, observer) {
     const main = runtime.module();
 
@@ -318,4 +315,3 @@ export default function define(runtime, observer) {
 
     return main;
 }
-

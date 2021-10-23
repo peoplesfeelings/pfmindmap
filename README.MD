@@ -9,7 +9,7 @@ To provide an easy way to implement a mind map interface. Useful for discussion 
 - scales to thousands of diagram items
 - diagram items are customizable in appearance and data model (the implementing app provides the HTML element for diagram items, and a function that populates it with data)
 - zoom and pan like a map interface
-- draggable items
+- diagram items are draggable 
 - handles window resize events
 - data can arrive out of order (only items that can be placed in the tree are displayed)
 

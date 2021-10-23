@@ -1,15 +1,12 @@
 /*
-
 pfmindmap
 copyright people's feelings 2021
 github.com/peoplesfeelings/pfmindmap
-
 */
 
 import define from './notebook.js';
 import * as d3 from "d3";
 import {Runtime, Inspector} from "@observablehq/runtime";
-
 
 const   TAG = 'pfmm - ',
         OPTIONS_DEFAULTS = {

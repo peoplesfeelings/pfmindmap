@@ -16,7 +16,10 @@
   "homepage": "https://github.com/peoplesfeelings/pfmindmap#readme",
   "keywords": [
     "discussion",
-    "mindmap"
+    "mindmap",
+    "mind-map",
+    "force-directed",
+    "diagram"
   ],
   "license": "BSD-2-Clause",
   "main": "src/main.js",
