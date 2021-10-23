@@ -45,10 +45,9 @@ That will generate a JS (ES6) module format bundle in the `/dist` directory that
 3. Call the **updateSimulationData** method for the visualization to update.
 
 ### Class constructor parameters
-- **containerEl**: DOM element (or React ref) of visualization container
-- **itemCreator**: Function that creates a DOM element for a diagram item (not populated with data)
-- **itemPopulator**: Function that populates a diagram item DOM element with data. Should have **(el, data)** for parameters and return the element it&apos;s passed, populated.
-- **options**: Options object
+- **containerEl**: HTML element (or React ref) of visualization container
+- **itemElCreator**: Function that takes a data object as its parameter and returns an HTML element for that diagram item. This function will receive data objects sent to **addDataItems**. The returned element should be populated with the data, as desired.
+- **options**: Options object. Include keys to override defaults.
 
 ### Options
 - **item_width**: Numerical. The unit is pixels. Default: 200
@@ -93,27 +92,25 @@ That will generate a JS (ES6) module format bundle in the `/dist` directory that
     </div>
 
     <script type="module">
-        import pfmindmap from 'path/to/pfmindmap_bundle.js';
+        import pfmindmap from './path/to/pfmindmap_bundle.js';
         
         var data = [
             { 'id': '8843784378', 'reply_to_id': '', 'message': 'wazaaa', 'is_first': true },
             { 'id': '8064783478', 'reply_to_id': '8843784378', 'message': 'first level reply' },
             { 'id': '4785784534', 'reply_to_id': '8843784378', 'message': 'another first level reply' },
-            { 'id': '4398489489', 'reply_to_id': '4785784534', 'message': 'second level reply text' },
+            { 'id': '4398489489', 'reply_to_id': '6734894923', 'message': 'some reply text' },
             { 'id': '6734894958', 'reply_to_id': '4785784534', 'message': 'another 2nd level reply' },
             { 'id': '6733494934', 'reply_to_id': '6734894958', 'message': 'a 3rd level reply' },
             { 'id': '6734894923', 'reply_to_id': '6734894958', 'message': 'another 3rd level reply' },
             { 'id': '6734894912', 'reply_to_id': '6734894923', 'message': '4th level reply' },
             { 'id': '4783489548', 'reply_to_id': '8843784378', 'message': 'this is another first level reply' }
         ];
-        var itemCreator = () => {
-            return document.querySelector('.item-to-clone').cloneNode(true);
+        var itemElCreator = (data) => {
+            const newEl = document.querySelector('.item-to-clone').cloneNode(true);
+            newEl.innerHTML = data["message"];
+            return newEl;
         };
-        var itemPopulator = (item, data) => { 
-            item.innerHTML = data["message"];
-            return item; 
-        };
-        var pfmm = new pfmindmap(document.querySelector("#container-div"), itemCreator, itemPopulator, { 'item_width': 300 });
+        var pfmm = new pfmindmap(document.querySelector("#container-div"), itemElCreator, { 'item_width': 300 });
         pfmm.addDataItems(data);
         pfmm.updateSimulationData();
         pfmm.zoomTo(0.3);

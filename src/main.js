@@ -15,21 +15,18 @@ const   TAG = 'pfmm - ',
         };
 
 export default class { 
-    constructor (containerEl, itemCreator, itemPopulator, options) {
-        if (arguments.length != 4) {
-            this.error('constructor expected 4 parameters: containerEl, itemCreator, itemPopulator, and options object');
+    constructor (containerEl, itemElCreator, options) {
+        if (arguments.length != 3) {
+            this.error('Constructor requires 3 parameters: a container element, a diagram item HTML element creator function, and an options object. See Readme for documentation. https://github.com/peoplesfeelings/pfmindmap');
         }
         if (typeof(containerEl) != 'object') {
             this.error('constructor first parameter should be a dom element');
         }
-        if (typeof(itemCreator) != 'function') {
+        if (typeof(itemElCreator) != 'function') {
             this.error('constructor second parameter should be a function');
         }
-        if (typeof(itemPopulator) != 'function') {
-            this.error('constructor third parameter should be a function');
-        }
         if (typeof(options) != 'object') {
-            this.error('constructor fourth parameter should be an object');
+            this.error('constructor third parameter should be an object');
         }
         if ('item_width' in options && typeof(options.item_width) != 'number') {
             this.error("option.item_width should be a number");
@@ -58,8 +55,7 @@ export default class {
         });
         
         this.main.define("container", [], containerEl );
-        this.main.define("populate", [], () => { return itemPopulator; } );
-        this.main.define("itemCreator", [], () => { return itemCreator; } );
+        this.main.define("itemElCreator", [], () => { return itemElCreator; } );
         this.main.define("options", [], this.combinedOptions );
 
         let _this = this;

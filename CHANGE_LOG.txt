@@ -2,6 +2,11 @@ RELEASE NOTES
 
 This log is mainly for breaking changes.
 
+1.8.0
+
+Breaking changes
+- The constructor of the class that is the default export of this module now requires three parameters instead of four. Two of them were combined: the item creator function and the item populator function. The second parameter should now be a function that takes a data object as its parameter and returns an HTML element that is populated with the data.
+
 1.7.0
 
 Breaking changes

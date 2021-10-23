@@ -13,8 +13,8 @@ export default function define(runtime, observer) {
     const main = runtime.module();
 
     main.variable(observer("chart")).define("chart", 
-      ["dimens", "drag", "invalidation", "itemCreator", "options", "mutableTransform", "populate"], 
-      function(dimens, drag, invalidation, itemCreator, options, mutableTransform, populate) {
+      ["dimens", "drag", "invalidation", "itemElCreator", "options", "mutableTransform"], 
+      function(dimens, drag, invalidation, itemElCreator, options, mutableTransform) {
 
         const simulation = d3.forceSimulation()
             .alphaDecay(.04)
@@ -77,7 +77,7 @@ export default function define(runtime, observer) {
                         enter => enter.append(function(d) {
                             // entering items get positioned next to most recent ancestor that has position
                             setPosToAncestor(d, dataNodesWithOld);
-                            let newItemEl = populate(itemCreator(), d);
+                            let newItemEl = itemElCreator(d);
 
                             newItemEl.style.boxSizing = "border-box";
                             newItemEl.style.width = options.item_width + "px";
