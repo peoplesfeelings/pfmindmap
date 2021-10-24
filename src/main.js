@@ -35,7 +35,7 @@ export default class {
             this.error("option.force_unique_ids should be a boolean");
         }
         this.combinedOptions = Object.assign({}, OPTIONS_DEFAULTS, options);
-        this.store = new store(this.combinedOptions);
+        this.store = new Store(this.combinedOptions);
 
         this.main = new Runtime().module(define, notebookVariable => {
             if (notebookVariable === "chart") {
@@ -101,7 +101,7 @@ export default class {
     }
 }
 
-class store {
+class Store {
     constructor(opts) {
         this._placed = [];
         this._unplaced = [];
@@ -110,7 +110,7 @@ class store {
     addItems(items) {
         if (this._opts.force_unique_ids) {
             for (let i = 0; i < items.length; i++) {
-                if (this.isPlaced(items[i])) {
+                if (this.isPlaced(items[i]) || this.isInUnplaced(items[i])) {
                     items.splice(i, 1);
                     i--;
                 }
@@ -140,6 +140,9 @@ class store {
     }
     isPlaced(item) {
         return this._placed.find(obj => obj.id == item.id);
+    }
+    isInUnplaced(item) {
+        return this._unplaced.find(obj => obj.id == item.id);
     }
     getData() {
         return this._placed;
