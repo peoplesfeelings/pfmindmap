@@ -35,7 +35,7 @@ npm run makebundle
 That will generate a JS (ES6) module format bundle in the `/dist` directory that includes the dependencies. Import that like this:
 ```
 <script type="module"> 
-    import pfmindmap from 'path/to/pfmindmap_bundle.js'; 
+    import pfmindmap from './path/to/pfmindmap_bundle.js'; 
 </script>
 ```
 
@@ -47,7 +47,7 @@ That will generate a JS (ES6) module format bundle in the `/dist` directory that
 ### Class constructor parameters
 - **containerEl**: HTML element (or React ref) of visualization container
 - **itemElCreator**: Function that takes a data object as its parameter and returns an HTML element for that diagram item. This function will receive data objects sent to **addDataItems**. The returned element should be populated with the data, as desired.
-- **options**: Options object. Include keys to override defaults.
+- **options**: Options object. Include a key to override its default value.
 
 ### Options
 - **item_width**: Numerical. The unit is pixels. Default: 200
@@ -70,8 +70,8 @@ That will generate a JS (ES6) module format bundle in the `/dist` directory that
 + The implementing app can include any custom key/value pairs needed for its use case.
 
 ### To use as a discussion interface
-- To add a message submit form, put a reply button in your item element, with a listener that shows a message submit form and sends that form the **id** being replied to. 
-- If cloning an element in the itemCreator function, event handlers don&apos;t get cloned, so use event delegation: put the listener on the container and check for the intended event.target in that handler. 
+- Put a reply button in your item element, with a listener that shows a message form and sends that form the **id** being replied to. 
+- If cloning an element in the itemElCreator function, event handlers don&apos;t get cloned, so use event delegation: put the listener on the container and check for the intended event.target in that handler. 
 - You can get the **id** by finding the closest ancestor **foreignObject** of the item element and getting the **data-pfmm-id** attribute value from it. Ex: `event.target.closest('foreignObject').dataset.pfmmId`
 - Submit the user&apos;s message from your form to your app&apos;s backend. Then the user&apos;s message can get populated to the interface in the same way as the rest of the data.
 
@@ -118,10 +118,6 @@ That will generate a JS (ES6) module format bundle in the `/dist` directory that
 </body>
 </html>
 ```
-
-### Built with
-- D3 v6.3.0
-- Observable runtime v4.8.0
 
 ### License
 - BSD 2 clause
