@@ -7,7 +7,7 @@ To provide an easy way to implement a mind map interface. Useful for discussion 
 - entering items enter gracefully, near to the most recent ancestor that was already placed
 - natural-looking, stable tree that makes economical use of space (accomplished with D3&apos;s force simulation)
 - scales to thousands of diagram items
-- diagram items are customizable in appearance and data model (the implementing app provides the HTML element for diagram items, and a function that populates it with data)
+- diagram items are customizable in appearance and data model (the implementing app provides a function that takes a data argument and returns an HTML element for that diagram item)
 - zoom and pan like a map interface
 - diagram items are draggable 
 - handles window resize events
@@ -25,7 +25,7 @@ then:
 import pfmindmap from "pfmindmap";
 ```
 
-**For web pages that are not bundled JS apps, and other cases:**
+**For web pages that are not JS apps, and other cases:**
 ```
 git clone https://github.com/peoplesfeelings/pfmindmap.git
 cd pfmindmap
