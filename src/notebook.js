@@ -1,18 +1,19 @@
 /*
 pfmindmap
-copyright people's feelings 2021
+copyright people's feelings 2022
 github.com/peoplesfeelings/pfmindmap
 */
 
 import * as d3 from "d3";
 
 /* 
-    observable notebook like from observablehq.com
+    observable notebook like from observablehq.com.
+    basically just a bunch of data-flow cells (aka notebook variables).
 */
-export default function define(runtime, observer) {
+export default function define(runtime, observerFactory) {
     const main = runtime.module();
 
-    main.variable(observer("chart")).define("chart", 
+    main.variable(observerFactory("chart")).define("chart", 
       ["dimens", "drag", "invalidation", "itemElCreator", "options", "mutableTransform"], 
       function(dimens, drag, invalidation, itemElCreator, options, mutableTransform) {
 
@@ -65,6 +66,11 @@ export default function define(runtime, observer) {
             lineSelection.attr("transform", transform);
         }
 
+        /*
+            D3 pattern: Put API functions on the dom element.
+            The "chart" notebook cell conventionally returns a dom element.
+            This object is where we put functions that interact with the visualization.
+        */
         return Object.assign(svgSelection.node(), {
             // d3 pattern for adding new items while keeping position data of existing items
             update: (dataNodes, dataLinks) => {
@@ -93,6 +99,7 @@ export default function define(runtime, observer) {
                             d.half_width_fo = d.width / 2 + 1;
                             d.half_height_fo = d.height / 2 + 1;
 
+                            // fix position of root node
                             if (d.is_first) {
                                 d.fx = 0;
                                 d.fy = 0;
@@ -227,15 +234,21 @@ export default function define(runtime, observer) {
                     .force("collision", stashedCollision)
                     .force("x", stashedX)
                     .force("y", stashedY);
+
+                simulation.tick(75);
             }
         });
     });
 
-    main.variable(observer("data")).define("data", [], function(){
+    main.variable().define("data", [], function(){
         return []
     });
 
-    main.variable(observer("autoUpdate")).define("autoUpdate", ["chart", "data"], function(chart, data){
+    main.variable(observerFactory("autoUpdate")).define("autoUpdate", ["chart", "data"], function(chart, data){
+        /*
+            the "data" cell gets redefined from outside of the notebook, causing this cell to run, which updates
+            the chart visualization. 
+        */
         function createLinkArray(dataNodes) {
             let links = [];
             for (var item of dataNodes) {
@@ -255,7 +268,7 @@ export default function define(runtime, observer) {
         }
     });
 
-    main.variable(observer("dimens")).define("dimens", ["container"], function(container) {
+    main.variable().define("dimens", ["container"], function(container) {
         return [container.clientWidth, container.clientHeight]
     });
 
@@ -300,7 +313,7 @@ export default function define(runtime, observer) {
     });
 
     // if chart is recreated because user resized their window, this prevents the zoom level being reset to baseline
-    main.variable(observer("zoomToStored")).define("zoomToStored", ["chart"], function(chart){
+    main.variable(observerFactory("zoomToStored")).define("zoomToStored", ["chart"], function(chart){
         chart.zoomToStored();
     });
 
@@ -309,7 +322,7 @@ export default function define(runtime, observer) {
         return d3.zoomIdentity;
     });
 
-    main.variable(observer("mutableTransform")).define("mutableTransform", ["Mutable", "initialTransform"], function(Mutable, initialTransform) {
+    main.variable().define("mutableTransform", ["Mutable", "initialTransform"], function(Mutable, initialTransform) {
         return new Mutable(initialTransform);
     });
 

@@ -56,8 +56,8 @@ That will generate a JS (ES6) module format bundle in the `/dist` directory that
 ### Methods
 - **addDataItems(array)**: Endpoint where implementing app sends data. Takes an array of diagram item data objects. See **Item data format** section for info on data format.
 - **updateSimulationData()**: Update the visualization. This does not happen automatically when data is received by the module, so the implementing app may inform the user when new items are ready to be added, and let the user control when they are added.
-- **zoomTo(level)**: Set zoom level, manually. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
-- **freeze()**: Temporarily freeze the simulation, manually 
+- **zoomTo(level)**: Set zoom level, programmatically. Takes a numerical value, within the zoom scaleExtent specified in notebook.js, such as 0.1.
+- **freeze()**: Temporarily freeze the simulation
 - **centerView()**: Center the diagram in the viewport. Useful if the user has panned and wants to recenter
 - **untangle()**: Untangle anything that might be tangled in the diagram
 
@@ -72,7 +72,7 @@ That will generate a JS (ES6) module format bundle in the `/dist` directory that
 ### To use as a discussion interface
 - Put a reply button in your item element, with a listener that shows a message form and sends that form the **id** being replied to. 
 - If cloning an element in the itemElCreator function, event handlers don&apos;t get cloned, so use event delegation: put the listener on the container and check for the intended event.target in that handler. 
-- You can get the **id** by finding the closest ancestor **foreignObject** of the item element and getting the **data-pfmm-id** attribute value from it. Ex: `event.target.closest('foreignObject').dataset.pfmmId`
+- Get the **id** by finding the closest ancestor **foreignObject** of the item element and getting the **data-pfmm-id** attribute value from it. Ex: `event.target.closest('foreignObject').dataset.pfmmId`
 - Submit the user&apos;s message from your form to your app&apos;s backend. Then the user&apos;s message can get populated to the interface in the same way as the rest of the data.
 
 ### Example

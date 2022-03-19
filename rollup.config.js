@@ -6,7 +6,7 @@ const bannerText = `
 This file is a bundle of <%= pkg.name %> <%= pkg.version %> and its dependencies.
 
 <%= pkg.name %> <%= pkg.version %>
-copyright 2021 people's feelings
+copyright 2022 people's feelings
 pseudonym hash: 2A73BD701A1CE2FBE2CB3B4D119E9DFC061AA38C26763BAE921FB87336E87E42
 
 github.com/peoplesfeelings/pfmindmap

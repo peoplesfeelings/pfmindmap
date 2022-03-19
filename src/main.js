@@ -1,6 +1,6 @@
 /*
 pfmindmap
-copyright people's feelings 2021
+copyright people's feelings 2022
 github.com/peoplesfeelings/pfmindmap
 */
 
@@ -37,11 +37,22 @@ export default class {
         this.combinedOptions = Object.assign({}, OPTIONS_DEFAULTS, options);
         this.store = new Store(this.combinedOptions);
 
+        /* 
+            the observable runtime instance. 
+            loads the notebook. 
+            we pass an observer factory function, which assigns observers to a few of the 
+            notebook's variables. 
+        */
         this.main = new Runtime().module(define, notebookVariable => {
             if (notebookVariable === "chart") {
                 return new Inspector(containerEl);
             }
             if (notebookVariable === "autoUpdate") {
+                /* 
+                    put an observer on this variable so the cell will run (at least) once, 
+                    as soon as it is able to (when its observed variables resolve). the
+                    variable is not observed by anything else so it would never run, otherwise.
+                */ 
                 return true;
             }
             if (notebookVariable === "zoomToStored") {
@@ -54,6 +65,7 @@ export default class {
             }
         });
         
+        // add notebook variables
         this.main.define("container", [], containerEl );
         this.main.define("itemElCreator", [], () => { return itemElCreator; } );
         this.main.define("options", [], this.combinedOptions );
@@ -101,6 +113,10 @@ export default class {
     }
 }
 
+/*
+    store data here before adding it to diagram.
+    _placed is items for which we know we have the parent (confirmed part of hierarchical data structure). 
+*/
 class Store {
     constructor(opts) {
         this._placed = [];
@@ -120,6 +136,7 @@ class Store {
         Array.prototype.push.apply(this._unplaced, items);
     }
     placeUnplaced() {
+        // if we have added an element to _placed then we run this function again
         var needToGoAgain = false;
 
         for (let i = 0; i < this._unplaced.length; i++) {
